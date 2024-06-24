@@ -22,8 +22,14 @@ def scrollDetailPage(driver, scrollIntervalTime):
         driver.find_element(By.XPATH, "//body").send_keys(Keys.PAGE_DOWN)
         time.sleep(scrollIntervalTime)
         try:
-            # 더보기 버튼 요소 찾기
-            button_element = allElements.getMoreDetailButton(driver)
+            for i in range(3, 10):
+                try:
+                    # 더보기 버튼 요소 찾기
+                    button_element = allElements.getMoreDetailButton(driver, i)
+                    if button_element:
+                        break
+                except:
+                    continue
     
             # 요소 위치 가져오기
             button_location = button_element.location

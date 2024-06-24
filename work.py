@@ -35,8 +35,13 @@ def mobileNaverShopping(proxy_ip):
 
                 if find:
                     break
-                # 찾는게 없으면 다음 버튼 클릭
-                clickUtil.clickNext(driver)
+                for i in range(3, 11):
+                    try:
+                        # 찾는게 없으면 다음 버튼 클릭
+                        if clickUtil.clickNext(driver, i):
+                            break
+                    except:
+                        continue
             except:
                 pass
 
