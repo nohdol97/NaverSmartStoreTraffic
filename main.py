@@ -1,20 +1,15 @@
 import time
-import proxy
 import work
 import timeValues as timeValues
 import traceback
+import productList
+import driverInfo
 
-# TODO: Proxy IP 셋팅되면 proxy_list 에 넣고 사용
-# proxies = proxy.getProxyList()
-proxies = [
-    1
-]
-
-# 각 프록시를 사용하여 네이버 페이지 접속 테스트
-for proxy in proxies:
+driver = driverInfo.create_driver()
+for midValueKeywordStr in productList.getMidValueKeywordList():
     try:
-        work.mobileNaverShopping(proxy)
+        work.mobileNaverShopping(driver, midValueKeywordStr)
     except Exception as e:
-        print(f"Proxy: {proxy} - Error: {e}")
+        print(f"Error: {e}")
         traceback.print_exc()
-    time.sleep(timeValues.getWaitLoadingTime())  # 각 접속 사이에 대기
+    time.sleep(timeValues.getWaitLoadingTime())
