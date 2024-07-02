@@ -26,7 +26,7 @@ def getTitleValueProduct(driver, title): # 상품의 title 로 위치 파악
     return driver.find_elements(By.XPATH, f'//*[contains(text(), "{title}")]')
 
 def getMoreDetailButton(driver, i): # 상품 페이지 내에서 '상세정보 펼쳐보기' 
-    return driver.find_element(By.XPATH, f'//*[@id="INTRODUCE"]/div/div[{i}]/button')
+    return driver.find_element(By.XPATH, f'//*[@id="INTRODUCE"]/div/div[{8}]/button')
 
 def getStayLoginState(driver): # 로그인 유지하기 버튼
     return driver.find_element(By.XPATH, '//*[@id="login_stay"]/label')
