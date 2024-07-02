@@ -46,7 +46,7 @@ def findProductByMidValue():
 def createDriverTest():
     # Chrome option 설정
     chrome_options = webdriver.ChromeOptions()
-    chromeOptions.addOptimization(chrome_options)
+    # chromeOptions.addOptimization(chrome_options)
     # chromeOptions.addMobile(chrome_options)
 
     # ChromeDriver를 webdriver_manager를 사용하여 자동으로 설치 및 설정
