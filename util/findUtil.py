@@ -18,8 +18,9 @@ def findTargetByMidValue(driver, mid_value, isClick):
     while not find or tryFinding < maxFind:
             find = findByMidValue(driver, mid_value, isClick)
             if find:
-                page = findPageNum(driver)
+                page = count
                 ranking = ranking + countUtil.getFindCountByMidValue(driver, mid_value)
+                print("find!!")
                 break
             else:
                 ranking = ranking + countUtil.getCountAll(driver)
@@ -37,6 +38,7 @@ def findTargetByMidValue(driver, mid_value, isClick):
                         break
                     # 찾는게 없으면 다음 버튼 클릭
                     if clickUtil.clickNext(driver, i):
+                        print(f'clickNext({count})')
                         count = count + 1
                         break
                 except:
@@ -80,20 +82,3 @@ def findByTitle(driver, title, isClick):
             if isClick:
                 clickUtil.clickTarget(driver, elements)
             return elements
-            
-def findPageNum(driver): # TODO 문제 있음 1로만 나옴
-    # 현재 Page url 가져오기
-    url = driver.current_url
-
-    # 정규 표현식 패턴을 정의합니다.
-    pattern = r"pagingIndex=(\d+)"
-    
-    # 정규 표현식 검색을 수행합니다.
-    match = re.search(pattern, url)
-    
-    # 검색된 결과가 있으면 값을 반환하고, 없으면 None을 반환합니다.
-    if match:
-        result = match.group(1)
-        return result
-    else:
-        return '1'
