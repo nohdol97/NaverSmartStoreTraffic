@@ -1,2 +1,4 @@
+chrome_profile*
+temp_chrome*
 __pycache__/
 *.py[cod]

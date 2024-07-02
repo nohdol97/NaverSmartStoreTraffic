@@ -5,7 +5,7 @@ def getWaitLoadingTime():
     return WAIT_TIME
 
 def getWaitScrollTime():
-    WAIT_TIME = random.uniform(1, 3)
+    WAIT_TIME = random.uniform(0.5, 1)
     return WAIT_TIME
 
 def getWaitScrollTimeFast():
@@ -13,9 +13,13 @@ def getWaitScrollTimeFast():
     return WAIT_TIME
 
 def getWaitInTargetWithDetailTime():
-    WAIT_TIME = random.uniform(1, 4)
+    WAIT_TIME = random.uniform(5, 10)
     return WAIT_TIME
 
 def getWaitInTargetTime():
-    WAIT_TIME = random.uniform(3, 6)
+    WAIT_TIME = random.uniform(12, 15)
+    return WAIT_TIME
+
+def getWaitImageProductLoadingTime():
+    WAIT_TIME = random.uniform(12, 15)
     return WAIT_TIME

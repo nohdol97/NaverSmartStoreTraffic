@@ -10,7 +10,16 @@ def scrollEndPosition(driver):
     return now_scroll_height < document_height
     
 def scrollToEndFast(driver):
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    last_height = driver.execute_script("return document.body.scrollHeight")
+
+    for i in range(10):
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(0.5)
+        new_height = driver.execute_script("return document.body.scrollHeight")
+
+        if new_height == last_height:
+            break
+        last_height = new_height
 
 def scrollToEnd(driver, scrollIntervalTime):
     while scrollEndPosition(driver):

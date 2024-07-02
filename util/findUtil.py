@@ -1,40 +1,69 @@
-import time
+import time, re
 
 import timeValues as timeValues
 import util.scrollUtil as scrollUtil
+import util.countUtil as countUtil
+import util.clickUtil as clickUtil
+
 import allElements
 
-def findByMidValue(driver, mid_value):
+maxPage = 20
+maxFind = 3
+
+def findTargetByMidValue(driver, mid_value, isClick):
+    find = False
+    ranking = 0
+    count = 1
+    tryFinding = 0
+    while not find or tryFinding < maxFind:
+            find = findByMidValue(driver, mid_value, isClick)
+            if find:
+                page = findPageNum(driver)
+                ranking = ranking + countUtil.getFindCountByMidValue(driver, mid_value)
+                break
+            else:
+                ranking = ranking + countUtil.getCountAll(driver)
+            for i in range(3, 11):
+                try:
+                    if count == maxPage:
+                        element = allElements.getSearchInShopping(driver)
+                        element.click()
+                        time.sleep(1)
+                        element = allElements.getSearchIconInShopping(driver)
+                        element.click()
+                        ranking = 0
+                        count = 1
+                        tryFinding = tryFinding + 1
+                        break
+                    # 찾는게 없으면 다음 버튼 클릭
+                    if clickUtil.clickNext(driver, i):
+                        count = count + 1
+                        break
+                except:
+                    continue
+    return page, ranking
+
+def findByMidValue(driver, mid_value, isClick):
     # 맨 아래로 빠르게 스크롤
     scrollUtil.scrollToEndFast(driver)
     
     # mid_value 기준 해당 상품 있는지 확인
     time.sleep(timeValues.getWaitScrollTime())
-    elements = allElements.getMidValueProduct(driver, mid_value)
-    if elements:
-        # 있다면 해당 상품 위치로 이동
-        element_location = elements[0].location['y']
-        offset = -150  # 요소 위치에서 위로 스크롤할 픽셀 값
-        driver.execute_script(f"window.scrollTo(0, {element_location + offset});")
-        time.sleep(timeValues.getWaitLoadingTime())
-        try:
-            # 상품 클릭 시도
-            elements[0].click()
-            return True
-        except Exception as e:
-            # 가려져 있는 요소 찾기
-            overlapping_element = driver.execute_script("""
-                var elem = arguments[0];
-                var rect = elem.getBoundingClientRect();
-                return document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
-            """, elements[0])
+    for i in range(1, 5):
+        elements = allElements.getMidValueProduct(driver, mid_value, i)
+        if elements:
+            # 있다면 해당 상품 위치로 이동
+            element_location = elements[0].location['y']
+            offset = -150  # 요소 위치에서 위로 스크롤할 픽셀 값
+            driver.execute_script(f"window.scrollTo(0, {element_location + offset});")
+            time.sleep(timeValues.getWaitLoadingTime())
             
-            # 가려져 있는 요소 클릭
-            driver.execute_script("arguments[0].click();", overlapping_element)
-            return True
+            if isClick:
+                clickUtil.clickTarget(driver, elements)
+            return elements
 
 @DeprecationWarning
-def findByTitle(driver, title):
+def findByTitle(driver, title, isClick):
     while scrollUtil.scrollEndPosition(driver):
         # 맨 아래로 빠르게 스크롤
         scrollUtil.scrollToEndFast(driver)
@@ -47,18 +76,24 @@ def findByTitle(driver, title):
             offset = -150  # 요소 위치에서 위로 스크롤할 픽셀 값
             driver.execute_script(f"window.scrollTo(0, {element_location + offset});")
             time.sleep(timeValues.getWaitLoadingTime())
-            try:
-                # 상품 클릭 시도
-                elements[0].click()
-                return True
-            except Exception as e:
-                # 가려져 있는 요소 찾기
-                overlapping_element = driver.execute_script("""
-                    var elem = arguments[0];
-                    var rect = elem.getBoundingClientRect();
-                    return document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
-                """, elements[0])
-                
-                # 가려져 있는 요소 클릭
-                driver.execute_script("arguments[0].click();", overlapping_element)
-                return True
+            
+            if isClick:
+                clickUtil.clickTarget(driver, elements)
+            return elements
+            
+def findPageNum(driver): # TODO 문제 있음 1로만 나옴
+    # 현재 Page url 가져오기
+    url = driver.current_url
+
+    # 정규 표현식 패턴을 정의합니다.
+    pattern = r"pagingIndex=(\d+)"
+    
+    # 정규 표현식 검색을 수행합니다.
+    match = re.search(pattern, url)
+    
+    # 검색된 결과가 있으면 값을 반환하고, 없으면 None을 반환합니다.
+    if match:
+        result = match.group(1)
+        return result
+    else:
+        return '1'
