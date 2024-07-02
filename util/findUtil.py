@@ -47,7 +47,9 @@ def findTargetByMidValue(driver, mid_value, isClick):
 
 def findByMidValue(driver, mid_value, isClick):
     # 맨 아래로 빠르게 스크롤
+    print('scroll fast E')
     scrollUtil.scrollToEndFast(driver)
+    print('scroll fast X')
     
     # mid_value 기준 해당 상품 있는지 확인
     time.sleep(timeValues.getWaitScrollTime())
