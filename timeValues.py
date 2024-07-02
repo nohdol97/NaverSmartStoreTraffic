@@ -5,11 +5,7 @@ def getWaitLoadingTime():
     return WAIT_TIME
 
 def getWaitScrollTime():
-    WAIT_TIME = random.uniform(0.5, 1)
-    return WAIT_TIME
-
-def getWaitScrollTimeFast():
-    WAIT_TIME = random.uniform(0.1, 0.5)
+    WAIT_TIME = random.uniform(1, 2)
     return WAIT_TIME
 
 def getWaitInTargetWithDetailTime():
