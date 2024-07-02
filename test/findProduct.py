@@ -37,8 +37,7 @@ def findProductByMidValue():
         print("driver get X")
         time.sleep(3)
 
-        checkDriverStatus(driver)
-
+        driver.save_screenshot('/home/ubuntu/screenshot1.png')
         page, ranking = findUtil.findTargetByMidValue(driver, mid_value, False)
 
         print(f"page({page}), ranking({ranking})")

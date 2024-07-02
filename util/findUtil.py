@@ -49,6 +49,7 @@ def findByMidValue(driver, mid_value, isClick):
     # 맨 아래로 빠르게 스크롤
     print('scroll fast E')
     scrollUtil.scrollToEndFast(driver)
+    driver.save_screenshot('/home/ubuntu/screenshot2.png')
     new_height = driver.execute_script("return document.body.scrollHeight")
     print(f'height = {new_height}')
     print('scroll fast X')
