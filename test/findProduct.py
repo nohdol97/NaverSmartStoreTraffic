@@ -47,6 +47,9 @@ def createDriverTest():
     # ChromeDriver를 webdriver_manager를 사용하여 자동으로 설치 및 설정
     service = Service(ChromeDriverManager().install())
 
+    # Xvfb 설정
+    os.environ['DISPLAY'] = ':99'
+
     # WebDriver 인스턴스 생성    
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
