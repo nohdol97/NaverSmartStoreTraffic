@@ -16,7 +16,7 @@ def getMoreShopping(driver): # 네이버 모바일 통합검색에서 '쇼핑 �
     return driver.find_element(By.XPATH, '//*[@id="ct"]//span[@class="kwd" and contains(text(), "쇼핑")]')
 
 def getNextButton(driver, i): # 네이버 모바일 쇼핑 내에서 다음 페이지 버튼
-    return driver.find_element(By.XPATH, f'//*[@id="__next"]/div/div[2]/div[{i}]/div/button[2]')
+    return driver.find_element(By.XPATH, f'//*[@id="__next"]/div/div[2]/div[{8}]/div/button[2]')
 
 def getMidValueProduct(driver, mid_value, i): # 상품의 mid_value 로 위치 파악
     return driver.find_elements(By.XPATH, f'//*[@id="_sr_lst_{mid_value}"]/div/div[{i}]/a')
@@ -26,7 +26,7 @@ def getTitleValueProduct(driver, title): # 상품의 title 로 위치 파악
     return driver.find_elements(By.XPATH, f'//*[contains(text(), "{title}")]')
 
 def getMoreDetailButton(driver, i): # 상품 페이지 내에서 '상세정보 펼쳐보기' 
-    return driver.find_element(By.XPATH, f'//*[@id="INTRODUCE"]/div/div[{8}]/button')
+    return driver.find_element(By.XPATH, f'//*[@id="INTRODUCE"]/div/div[{i}]/button')
 
 def getStayLoginState(driver): # 로그인 유지하기 버튼
     return driver.find_element(By.XPATH, '//*[@id="login_stay"]/label')
