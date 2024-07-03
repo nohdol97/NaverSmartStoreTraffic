@@ -6,7 +6,8 @@ def getProxyIp(ID):
     try:
         with open('hiPaiIp.txt', 'r') as file:
             lines = file.readlines()
-    except:
+    except Exception as e:
+        print(f"Error reading file: {e}")
         time.sleep(3)
         getProxyIp(ID)
 
@@ -21,7 +22,8 @@ def getProxyIp(ID):
         with open('hiPaiIp.txt', 'w') as file:
             for line in lines:
                 file.write(line + '\n')
-    except:
+    except Exception as e:
+        print(f"Error writing file: {e}")
         time.sleep(3)
         getProxyIp(ID)
 
@@ -31,6 +33,7 @@ def setProxyIp(hiPaiProxy):
     try:
         with open('hiPaiIp.txt', 'a') as file:
             file.write(hiPaiProxy + '\n')
-    except:
+    except Exception as e:
+        print(f"Error editing file: {e}")
         time.sleep(3)
         setProxyIp(hiPaiProxy)
