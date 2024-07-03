@@ -45,6 +45,7 @@ def create_driver(profileNum, ID = None):
             # chromeOptions.intercept(driver)
 
             return driver, temp_profile_dir, hiPaiProxy
-        except:
+        except Exception as e:
+            print(f"Error Creating driverInfo file: {e}")
             time.sleep(3)
             pass

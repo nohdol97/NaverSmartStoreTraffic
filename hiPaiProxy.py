@@ -13,16 +13,11 @@ def getProxyIp(ID):
 
             # lines 중 첫번째 줄 선택
             selected_line = lines.pop(0)
-
+        
             # 선택된 줄 hiPaiIp.txt 에서 제거
-            try:
-                with open('hiPaiIp.txt', 'w') as file:
-                    for line in lines:
-                        file.write(line + '\n')
-            except Exception as e:
-                print(f"Error writing file: {e}")
-                time.sleep(3)
-                getProxyIp(ID)
+            with open('hiPaiIp.txt', 'w') as file:
+                for line in lines:
+                    file.write(line + '\n')
 
             return selected_line
         except Exception as e:
@@ -35,6 +30,7 @@ def setProxyIp(hiPaiProxy):
         try:
             with open('hiPaiIp.txt', 'a') as file:
                 file.write(hiPaiProxy + '\n')
+            break
         except Exception as e:
             print(f"Error editing file: {e}")
             time.sleep(3)
