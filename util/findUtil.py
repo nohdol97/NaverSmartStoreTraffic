@@ -24,7 +24,7 @@ def findTargetByMidValue(driver, mid_value, isClick):
             else:
                 ranking = ranking + countUtil.getCountAll(driver)
             for i in range(3, 11):
-                # try:
+                try:
                     if count == maxPage:
                         element = allElements.getSearchInShopping(driver)
                         element.click()
@@ -39,8 +39,8 @@ def findTargetByMidValue(driver, mid_value, isClick):
                     if clickUtil.clickNext(driver, i):
                         count = count + 1
                         break
-                # except:
-                #     continue
+                except:
+                    continue
     return page, ranking
 
 def findByMidValue(driver, mid_value, isClick):
