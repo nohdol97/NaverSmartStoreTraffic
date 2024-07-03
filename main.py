@@ -88,16 +88,14 @@ def task(profileNum):
 
         # 임시 프로필 디렉토리 삭제
         shutil.rmtree(temp_profile_dir)
-        time.sleep(random.randint(20, 60)) # 일정시간 대기
+        time.sleep(random.randint(90, 120)) # 일정시간 대기
 
-# def main():
-#     with ThreadPoolExecutor(max_workers=threadNum) as executor:
-#         futures = []
-#         for i in range(threadNum):
-#             futures.append(executor.submit(task, i))
-#             time.sleep(random.randint(60, 120)) # 시간 간격으로 스레드 실행
+def main():
+    with ThreadPoolExecutor(max_workers=threadNum) as executor:
+        futures = []
+        for i in range(threadNum):
+            futures.append(executor.submit(task, i))
+            time.sleep(random.randint(30, 120)) # 시간 간격으로 스레드 실행
 
-# if __name__ == "__main__":
-#     main()
-
-task(1)
+if __name__ == "__main__":
+    main()

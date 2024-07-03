@@ -20,11 +20,14 @@ def addOptimization(chrome_options, temp_profile_dir = None):
     chrome_options.add_argument('--disable-extensions')
     chrome_options.add_argument('--disable-infobars')
     chrome_options.add_argument('--disable-popup-blocking')
+    chrome_options.add_argument("--disk-cache-size=0")
 
     chrome_prefs = {
         "profile.managed_default_content_settings.images": 2,  # 이미지 비활성화
         "profile.managed_default_content_settings.videos": 2,  # 동영상 비활성화
         "profile.managed_default_content_settings.stylesheets": 2,  # 스타일시트 비활성화
+        "profile.default_content_settings.popups": 0,
+        "download.default_directory": "/dev/null"
     }
     chrome_options.add_experimental_option("prefs", chrome_prefs)
 
