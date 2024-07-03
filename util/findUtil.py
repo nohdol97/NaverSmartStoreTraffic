@@ -20,7 +20,6 @@ def findTargetByMidValue(driver, mid_value, isClick):
             if find:
                 page = count
                 ranking = ranking + countUtil.getFindCountByMidValue(driver, mid_value)
-                print("find!!")
                 break
             else:
                 ranking = ranking + countUtil.getCountAll(driver)
@@ -38,7 +37,6 @@ def findTargetByMidValue(driver, mid_value, isClick):
                         break
                     # 찾는게 없으면 다음 버튼 클릭
                     if clickUtil.clickNext(driver, i):
-                        print(f'clickNext({count})')
                         count = count + 1
                         break
                 # except:
@@ -47,12 +45,7 @@ def findTargetByMidValue(driver, mid_value, isClick):
 
 def findByMidValue(driver, mid_value, isClick):
     # 맨 아래로 빠르게 스크롤
-    print('scroll fast E')
     scrollUtil.scrollToEndFast(driver)
-    driver.save_screenshot('/home/ubuntu/screenshot2.png')
-    new_height = driver.execute_script("return document.body.scrollHeight")
-    print(f'height = {new_height}')
-    print('scroll fast X')
     
     # mid_value 기준 해당 상품 있는지 확인
     time.sleep(timeValues.getWaitScrollTime())

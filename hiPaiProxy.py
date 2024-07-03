@@ -39,7 +39,7 @@ def getProxyIp(ID):
                     file.write(line + '\n')
         return random_line, True
     else:
-        time.sleep(random.uniform(300, 600))
+        time.sleep(random.uniform(100, 300))
         # 아무 IP 사용, 로그인 하지 않음
         random_line = random.choice(lines)
         return random_line[0], False

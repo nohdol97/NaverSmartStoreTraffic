@@ -33,9 +33,6 @@ def create_driver(profileNum, ID = None):
     chromeOptions.addMobile(chrome_options)
     isLogin = chromeOptions.addProxy(chrome_options, ID)
 
-    # Xvfb 설정
-    os.environ['DISPLAY'] = ':99'
-
     # ChromeDriver를 webdriver_manager를 사용하여 자동으로 설치 및 설정
     service = Service(ChromeDriverManager().install())
 

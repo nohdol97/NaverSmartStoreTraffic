@@ -9,47 +9,54 @@ import util.randomUtil as randomUtil
 import hiPaiProxy
 
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
 
-slot = 50
-threadNum = 5
+threadNum = 10
 
 def task(profileNum):
-    for i in range(slot // threadNum):
-        with open('accounts.txt', 'r') as file:
-            lines = file.readlines()
+    while True:
+        if productList.checkFinish():
+            print(f"finish time: {datetime.now()}")
+            break
+        # with open('accounts.txt', 'r') as file:
+        #     lines = file.readlines()
 
-        # 각 줄에서 ','로 분할한 부분이 2개인 줄만 필터링
-        filtered_lines = [line for line in lines if len(line.split(',')) == 2]
+        # # 각 줄에서 ','로 분할한 부분이 2개인 줄만 필터링
+        # filtered_lines = [line for line in lines if len(line.split(',')) == 2]
 
-        # filtered_lines가 비어있지 않다면 랜덤하게 한 줄 선택
-        randomValue = randomUtil.get_random_value()
-        if randomValue < 0.6: # 60퍼 확률
-            if filtered_lines:
-                random_line = random.choice(filtered_lines)
+        # # filtered_lines가 비어있지 않다면 랜덤하게 한 줄 선택
+        # randomValue = randomUtil.get_random_value()
+        # if randomValue < 0.6: # 60퍼 확률
+        #     if filtered_lines:
+        #         random_line = random.choice(filtered_lines)
 
-                line = random_line.strip()
-                naverid, naverpassword = line.split(',')
+        #         line = random_line.strip()
+        #         naverid, naverpassword = line.split(',')
 
-                driver, temp_profile_dir, isLogin = driverInfo.create_driver(profileNum, naverid)
-                if isLogin:
-                    # 로그인
-                    try:
-                        loginUtil.login_with_account(driver, naverid, naverpassword)
-                        # accounts.txt 에서 line 에 해당하는 줄 가장 뒤에 ',used' 를 추가
-                        loginUtil.update_account_status(random_line)
-                    except:
-                        pass
-                else:
-                    loginUtil.naverHome(driver)
-            else:
-                driver, temp_profile_dir, isLogin = driverInfo.create_driver(profileNum)
-                loginUtil.naverHome(driver)
-        else:
-            driver, temp_profile_dir, isLogin = driverInfo.create_driver(profileNum)
-            loginUtil.naverHome(driver)
+        #         driver, temp_profile_dir, isLogin = driverInfo.create_driver(profileNum, naverid)
+        #         if isLogin:
+        #             # 로그인
+        #             try:
+        #                 loginUtil.login_with_account(driver, naverid, naverpassword)
+        #                 # accounts.txt 에서 line 에 해당하는 줄 가장 뒤에 ',used' 를 추가
+        #                 loginUtil.update_account_status(random_line)
+        #             except:
+        #                 pass
+        #         else:
+        #             loginUtil.naverHome(driver) 
+        #     else:
+        #         driver, temp_profile_dir, isLogin = driverInfo.create_driver(profileNum)
+        #         loginUtil.naverHome(driver)
+        # else:
+        #     driver, temp_profile_dir, isLogin = driverInfo.create_driver(profileNum)
+        #     loginUtil.naverHome(driver)
+
+        driver, temp_profile_dir, isLogin = driverInfo.create_driver(profileNum)
 
         for midValueKeywordStr in productList.getMidValueKeywordList():
             try:
+                if not productList.checkNegative(midValueKeywordStr):
+                    continue
                 loginUtil.naverHome(driver)
                 for j in range(5):
                     result = work.mobileNaverShopping(driver, midValueKeywordStr)
@@ -69,8 +76,10 @@ def task(profileNum):
             time.sleep(timeValues.getWaitLoadingTime())
         driver.quit()
 
-        # hiPaiProxy.txt 내에 아이디 지움
-        hiPaiProxy.eraseID(naverid)
+        productList.decreaseNum()
+
+        # # hiPaiProxy.txt 내에 아이디 지움
+        # hiPaiProxy.eraseID(naverid)
 
         # 임시 프로필 디렉토리 삭제
         shutil.rmtree(temp_profile_dir)
