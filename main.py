@@ -11,7 +11,7 @@ import hiPaiProxy
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
-threadNum = 10
+threadNum = 5
 
 def task(profileNum):
     while True:
