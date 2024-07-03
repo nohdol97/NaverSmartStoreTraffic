@@ -41,7 +41,7 @@ def findProductByMidValue():
         driver.get(url)
         time.sleep(3)
 
-        page, ranking = findUtil.findTargetByMidValue(driver, mid_value, False)
+        page, ranking = findTargetByMidValueTest(driver, mid_value, False)
 
         print(f"page({page}), ranking({ranking})")
         
@@ -61,23 +61,6 @@ def createDriverTest():
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     return driver
-
-def checkDriverStatus(driver):
-    try:
-        # Try to get the current URL
-        current_url = driver.current_url
-        print(f"Driver is running. Current URL: {current_url}")
-    except WebDriverException as e:
-        # If an exception occurs, it means the driver is not running
-        print(f"Driver is not running. Exception: {e}")
-
-    try:
-        # Try to get the page title
-        page_title = driver.title
-        print(f"Driver is running. Page Title: {page_title}")
-    except WebDriverException as e:
-        # If an exception occurs, it means the driver is not running
-        print(f"Driver is not running. Exception: {e}")
 
 def findTargetByMidValueTest(driver, mid_value, isClick):
     find = False
