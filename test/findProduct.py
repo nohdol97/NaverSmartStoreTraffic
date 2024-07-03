@@ -28,7 +28,7 @@ def findProductByMidValue():
 
     # 각 줄 출력
     for line in lines[1:]:
-        mid_value, keyword = line.split(',')
+        mid_value, keyword = line.split(',')[:2]
         print(f"midValue({mid_value}), keyword({keyword})")
         url = f"https://msearch.shopping.naver.com/search/all?query={keyword}"
 
