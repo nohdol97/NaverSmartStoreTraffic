@@ -11,7 +11,13 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
 import util.findUtil as findUtil
+import util.countUtil as countUtil
+import util.clickUtil as clickUtil
+import allElements
 import chromeOptions
+
+maxFind = 3
+maxPage = 20
 
 def findProductByMidValue():
     driver = createDriverTest()
@@ -35,7 +41,6 @@ def findProductByMidValue():
         driver.get(url)
         time.sleep(3)
 
-        driver.save_screenshot('/home/ubuntu/screenshot1.png')
         page, ranking = findUtil.findTargetByMidValue(driver, mid_value, False)
 
         print(f"page({page}), ranking({ranking})")
@@ -73,5 +78,40 @@ def checkDriverStatus(driver):
     except WebDriverException as e:
         # If an exception occurs, it means the driver is not running
         print(f"Driver is not running. Exception: {e}")
+
+def findTargetByMidValueTest(driver, mid_value, isClick):
+    find = False
+    ranking = 0
+    count = 1
+    tryFinding = 0
+    while not find or tryFinding < maxFind:
+            find = findUtil.findByMidValue(driver, mid_value, isClick)
+            print(f"height = {driver.execute_script("return document.body.scrollHeight")}")
+            if find:
+                page = count
+                ranking = ranking + countUtil.getFindCountByMidValue(driver, mid_value)
+                break
+            else:
+                ranking = ranking + countUtil.getCountAll(driver)
+            for i in range(3, 11):
+                try:
+                    if count == maxPage:
+                        element = allElements.getSearchInShopping(driver)
+                        element.click()
+                        time.sleep(1)
+                        element = allElements.getSearchIconInShopping(driver)
+                        element.click()
+                        ranking = 0
+                        count = 1
+                        tryFinding = tryFinding + 1
+                        break
+                    # 찾는게 없으면 다음 버튼 클릭
+                    if clickUtil.clickNext(driver, i):
+                        print(f"clickNext({count}")
+                        count = count + 1
+                        break
+                except:
+                    continue
+    return page, ranking
 
 findProductByMidValue()
