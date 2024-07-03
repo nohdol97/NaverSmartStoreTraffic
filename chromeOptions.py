@@ -34,13 +34,13 @@ def addMobile(chrome_options):
 
 def addProxy(chrome_options, ID = None):
     # hiPai Proxy 설정
-    hiPaiIp, isLogin = hiPaiProxy.getProxyIp(ID)
+    hiPaiIp = hiPaiProxy.getProxyIp(ID)
     proxy = Proxy()
     proxy.proxy_type = ProxyType.MANUAL
     proxy.http_proxy = f"{hiPaiIp}"
     proxy.ssl_proxy = f"{hiPaiIp}"
     chrome_options.add_argument('--proxy-server=%s' % proxy.http_proxy)
-    return isLogin
+    return hiPaiIp
 
 # 너무 느려짐
 def intercept(driver):

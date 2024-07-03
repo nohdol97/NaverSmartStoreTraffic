@@ -32,9 +32,7 @@ def findProductByMidValue():
         print(f"midValue({mid_value}), keyword({keyword})")
         url = f"https://msearch.shopping.naver.com/search/all?query={keyword}"
 
-        print("driver get E")
         driver.get(url)
-        print("driver get X")
         time.sleep(3)
 
         driver.save_screenshot('/home/ubuntu/screenshot1.png')

@@ -31,7 +31,7 @@ def create_driver(profileNum, ID = None):
     chrome_options = webdriver.ChromeOptions()
     chromeOptions.addOptimization(chrome_options, temp_profile_dir)
     chromeOptions.addMobile(chrome_options)
-    isLogin = chromeOptions.addProxy(chrome_options, ID)
+    hiPaiProxy = chromeOptions.addProxy(chrome_options, ID)
 
     # ChromeDriver를 webdriver_manager를 사용하여 자동으로 설치 및 설정
     service = Service(ChromeDriverManager().install())
@@ -42,4 +42,4 @@ def create_driver(profileNum, ID = None):
     # Chrome 최적화
     # chromeOptions.intercept(driver)
 
-    return driver, temp_profile_dir, isLogin
+    return driver, temp_profile_dir, hiPaiProxy
