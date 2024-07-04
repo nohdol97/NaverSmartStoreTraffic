@@ -7,12 +7,9 @@ import driverInfo
 import util.loginUtil as loginUtil
 import hiPaiProxy
 
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
-threadNum = 5
-
-def task(profileNum):
+def start(profileNum):
     while True:
         if productList.checkFinish():
             print(f"finish time: {datetime.now()}")
@@ -55,13 +52,3 @@ def task(profileNum):
         # 임시 프로필 디렉토리 삭제
         shutil.rmtree(temp_profile_dir)
         time.sleep(timeValues.getWaitRepeatingTime()) # 일정시간 대기
-
-def main():
-    with ThreadPoolExecutor(max_workers=threadNum) as executor:
-        futures = []
-        for i in range(threadNum):
-            futures.append(executor.submit(task, i))
-            time.sleep(timeValues.getWaitThreadTime()) # 시간 간격으로 스레드 실행
-
-if __name__ == "__main__":
-    main()

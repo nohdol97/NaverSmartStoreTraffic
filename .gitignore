@@ -2,3 +2,5 @@ chrome_profile*
 temp_chrome*
 __pycache__/
 *.py[cod]
+hiPaiIp.txt
+product_list.txt
