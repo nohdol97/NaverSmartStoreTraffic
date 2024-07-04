@@ -6,9 +6,7 @@ import allElements
 import time
 
 # ip 하나로 작업할 모든 상품 조회 하고, main 에서 ip 변경하고 작업
-def mobileNaverShopping(driver, midValueKeywordStr):
-    mid_value, keyword = midValueKeywordStr.split(',')[:2]
-
+def mobileNaverShopping(driver, mid_value, keyword):
     # 쇼핑판(불가), 상품 더 검색, 쇼핑
     accessShoppingUtil.access_random(driver, keyword)
 

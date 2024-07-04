@@ -35,9 +35,9 @@ def addMobile(chrome_options):
     # mobile emulation (상품 상세 들어가면 모바일 아님)
     chrome_options.add_experimental_option("mobileEmulation", mobile_emulations.getMobileEmulation())
 
-def addProxy(chrome_options, ID = None):
+def addProxy(chrome_options):
     # hiPai Proxy 설정
-    hiPaiIp = hiPaiProxy.getProxyIp(ID)
+    hiPaiIp = hiPaiProxy.getProxyIp()
     proxy = Proxy()
     proxy.proxy_type = ProxyType.MANUAL
     proxy.http_proxy = f"{hiPaiIp}"

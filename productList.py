@@ -12,7 +12,7 @@ def getMidValueKeywordList():
         time.sleep(3)
         getMidValueKeywordList()
 
-def decreaseNum():
+def decreaseNum(mid_value):
     try:
         with open('product_list.txt', 'r', encoding='utf-8') as file:
             lines = [line.strip() for line in file]
@@ -22,13 +22,11 @@ def decreaseNum():
 
         for line in lines[1:]:
             parts = line.split(',')
-            if len(parts) == 3:
+            # 해당하는 mid_value 라인의 숫자를 하나 뺌
+            if parts[0] == mid_value and int(parts[-1]) > 0:
                 # 마지막 숫자에서 1을 뺌
-                try:
-                    parts[-1] = str(int(parts[-1]) - 1)
-                    updated_lines.append(','.join(parts))
-                except ValueError:
-                    print(f"Error parsing number from line: {line}")
+                parts[-1] = str(int(parts[-1]) - 1)
+            updated_lines.append(','.join(parts))
 
         # 파일에 다시 쓰기
         with open('product_list.txt', 'w', encoding='utf-8') as file:
@@ -38,23 +36,22 @@ def decreaseNum():
         time.sleep(3)
         decreaseNum()
 
-def checkNegative(midValueKeywordStr):
+def checkProductNum(midValueKeywordStr):
     parts = midValueKeywordStr.split(',')
-    if int(parts[-1]) < 0:
+    if int(parts[-1]) == 0:
         return False
     return True
 
 def checkFinish():
     try:
-        all_below_zero = True
         with open('product_list.txt', 'r', encoding='utf-8') as file:
             lines = [line.strip() for line in file]
 
         for line in lines[1:]:
             parts = line.split(',')
             if int(parts[-1]) > 0:
-                all_below_zero = False
-        return all_below_zero
+                return False
+        return True
     except:
         time.sleep(3)
         checkFinish()

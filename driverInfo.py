@@ -10,7 +10,7 @@ previous_number = 0
 def get_new_cache_number(previous_number):
     return (previous_number + 3) % 10
 
-def create_driver(profileNum, ID = None):
+def create_driver(profileNum):
     for i in range(10):
         try:
             # 프로필 디렉토리 경로 지정
@@ -30,7 +30,7 @@ def create_driver(profileNum, ID = None):
             chrome_options = webdriver.ChromeOptions()
             chromeOptions.addOptimization(chrome_options, temp_profile_dir)
             chromeOptions.addMobile(chrome_options)
-            hiPaiProxy = chromeOptions.addProxy(chrome_options, ID)
+            hiPaiProxy = chromeOptions.addProxy(chrome_options)
 
             # Xvfb 설정
             os.environ['DISPLAY'] = ':99'

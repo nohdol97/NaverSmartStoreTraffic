@@ -1,14 +1,12 @@
-import random
 import time
-from datetime import datetime, timedelta
 
-def getProxyIp(ID):
+def getProxyIp():
     for i in range(10):
         try:
             with open('hiPaiIp.txt', 'r') as file:
                 lines = file.readlines()
 
-            # 빈 줄 제거 및 각 줄에서 ','로 구분
+            # 빈 줄 제거
             lines = [line.strip() for line in lines if line.strip()]
 
             # lines 중 첫번째 줄 선택
@@ -25,7 +23,7 @@ def getProxyIp(ID):
             time.sleep(3)
             pass
     
-def setProxyIp(hiPaiProxy):
+def addProxyIp(hiPaiProxy):
     for i in range(10):
         try:
             with open('hiPaiIp.txt', 'a') as file:

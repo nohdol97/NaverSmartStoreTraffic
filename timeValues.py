@@ -1,21 +1,22 @@
 import random
 
+def getWaitThreadTime():
+    return random.uniform(30, 120)
+
 def getWaitLoadingTime():
-    WAIT_TIME = random.uniform(3, 5)
-    return WAIT_TIME
+    return random.uniform(3, 5)
 
 def getWaitScrollTime():
-    WAIT_TIME = random.uniform(1, 2)
-    return WAIT_TIME
+    return random.uniform(1, 2)
 
 def getWaitInTargetWithDetailTime():
-    WAIT_TIME = random.uniform(5, 10)
-    return WAIT_TIME
+    return random.uniform(5, 10)
 
 def getWaitInTargetTime():
-    WAIT_TIME = random.uniform(5, 10)
-    return WAIT_TIME
+    return random.uniform(5, 10)
 
 def getWaitImageProductLoadingTime():
-    WAIT_TIME = random.uniform(5, 10)
-    return WAIT_TIME
+    return random.uniform(5, 10)
+
+def getWaitRepeatingTime():
+    return random.uniform(30, 60)
