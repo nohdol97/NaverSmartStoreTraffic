@@ -20,9 +20,10 @@ def findTargetByMidValue(driver, mid_value, isClick):
             if find:
                 page = count
                 ranking = ranking + countUtil.getFindCountByMidValue(driver, mid_value)
-                break
+                return page, ranking
             else:
                 ranking = ranking + countUtil.getCountAll(driver)
+                
             for i in range(3, 11):
                 try:
                     if count == maxPage:
@@ -41,7 +42,6 @@ def findTargetByMidValue(driver, mid_value, isClick):
                         break
                 except:
                     continue
-    return page, ranking
 
 def findByMidValue(driver, mid_value, isClick):
     # 맨 아래로 빠르게 스크롤
