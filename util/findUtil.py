@@ -7,7 +7,7 @@ import util.clickUtil as clickUtil
 
 import allElements
 
-maxPage = 20
+maxPage = 5
 maxFind = 3
 
 def findTargetByMidValue(driver, mid_value, isClick):
