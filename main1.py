@@ -12,5 +12,5 @@ def main1():
             futures.append(executor.submit(task.start, i))
             time.sleep(timeValues.getWaitThreadTime()) # 시간 간격으로 스레드 실행
 
-if __name__ == "__main1__":
+if __name__ == "__main__":
     main1()
