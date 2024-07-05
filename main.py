@@ -3,7 +3,7 @@ import time
 
 import task, timeValues
 
-threadNum = 5
+threadNum = 3
 startNum = threadNum * 0
 
 def main():
