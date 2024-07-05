@@ -15,12 +15,14 @@ def addOptimization(chrome_options, temp_profile_dir = None):
     # chrome_options.add_argument('--disable-software-rasterizer')
     chrome_options.add_argument('--no-zygote')
     chrome_options.add_argument('--disable-setuid-sandbox')
-    # chrome_options.add_argument('--window-size=800,600')  # 해상도 최소화
+    chrome_options.add_argument('--window-size=800,600')  # 해상도 최소화
     chrome_options.add_argument('--disable-blink-features=AutomationControlled')
     chrome_options.add_argument('--disable-extensions')
     chrome_options.add_argument('--disable-infobars')
     chrome_options.add_argument('--disable-popup-blocking')
     chrome_options.add_argument("--disk-cache-size=0")
+    chrome_options.add_argument('--disable-background-timer-throttling')
+    chrome_options.add_argument('--disable-renderer-backgrounding')
 
     chrome_prefs = {
         "profile.managed_default_content_settings.images": 2,  # 이미지 비활성화
