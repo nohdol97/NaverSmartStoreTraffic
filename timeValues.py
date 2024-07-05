@@ -10,10 +10,10 @@ def getWaitScrollTime():
     return random.uniform(1, 2)
 
 def getWaitInTargetWithDetailTime():
-    return random.uniform(3, 7)
+    return random.uniform(2, 5)
 
 def getWaitInTargetTime():
-    return random.uniform(3, 7)
+    return random.uniform(2, 5)
 
 def getWaitImageProductLoadingTime():
     return random.uniform(5, 10)
