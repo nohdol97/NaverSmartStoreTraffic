@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def getShoppingPan(driver): # 네이버 모바일에서 검색창 아래 쇼핑판
     return driver.find_element(By.XPATH, '//*[@id="HOME_SHORTCUT"]/ul/li[2]/a/div/picture/img')
@@ -19,7 +21,23 @@ def getNextButton(driver, i): # 네이버 모바일 쇼핑 내에서 다음 페�
     return driver.find_element(By.XPATH, f'//*[@id="__next"]/div/div[2]/div[{i}]/div/button[2]')
 
 def getMidValueProduct(driver, mid_value, i): # 상품의 mid_value 로 위치 파악
-    return driver.find_elements(By.XPATH, f'//*[@id="_sr_lst_{mid_value}"]/div/div[{i}]/a')
+    findAd = driver.find_element(By.XPATH, f'//*[@id="_sr_lst_{mid_value}"]')
+    if '광고' not in findAd.text:
+        return driver.find_element(By.XPATH, f'//*[@id="_sr_lst_{mid_value}"]/div/div[{i}]/a')
+    else:
+        return None
+
+def getPriceComparisonMidValueProduct(driver, mid_value): # 가격 비교 사이트 내에서 mid_value 로 위치 파악
+    return driver.find_element(By.XPATH, f"//*[@id='section-price']//a[contains(@href, 'nvMid={mid_value}')]")
+
+def getSellWhere(driver):
+    return driver.find_element(By.XPATH, '//*[@id="__next"]//*[contains(text(), "판매처")]')
+
+def getPriceComparisionMoreButton(driver): # 가격 비교 사이트 내에서 "전체 판매처 보러가기"
+    return driver.find_element(By.XPATH, "//*[@id='section-price']//a[contains(@class, 'main_link_more')]")
+
+def getPriceComparisionMoreMidValueProduct(driver, mid_value): # 가격 비교 사이트 내 전체 판매처 보러가기에서 mid_value 로 위치 파악
+    return driver.find_element(By.XPATH, f"//*[@id='__next']//a[contains(@href, 'nvMid={mid_value}')]")
 
 @DeprecationWarning
 def getTitleValueProduct(driver, title): # 상품의 title 로 위치 파악

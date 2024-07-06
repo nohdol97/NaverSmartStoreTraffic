@@ -24,8 +24,13 @@ def start(profileNum):
                 loginUtil.naverHome(driver)
                 # ip 바꾸면서 5번 시도
                 for j in range(5):
-                    mid_value, keyword = midValueKeywordStr.split(',')[:2]
-                    result = work.mobileNaverShopping(driver, mid_value, keyword)
+                    product = midValueKeywordStr.split(',')
+                    if (len(product) == 4):
+                        mid_value, comparison_mid_value, keyword = product[0], product[1], product[2]
+                        result = work.mobilePriceComparisonNaverShopping(driver, mid_value, comparison_mid_value, keyword)
+                    else:
+                        mid_value, keyword = product[0], product[1]
+                        result = work.mobileNaverShopping(driver, mid_value, keyword)
                     if result:
                         productList.decreaseNum(mid_value)
                         break
