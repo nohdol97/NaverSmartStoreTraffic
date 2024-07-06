@@ -25,7 +25,10 @@ def findTargetByMidValue(driver, mid_value, isPriceComparisonSite):
                     time.sleep(3)
                 time.sleep(3)
                 page = count
-                ranking = ranking + countUtil.getFindCountByMidValue(driver, mid_value)
+                try:
+                    ranking = ranking + countUtil.getFindCountByMidValue(driver, mid_value)
+                except:
+                    pass
                 return page, ranking
             else:
                 ranking = ranking + countUtil.getCountAll(driver)
