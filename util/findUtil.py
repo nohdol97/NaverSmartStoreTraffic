@@ -4,13 +4,15 @@ import timeValues as timeValues
 import util.scrollUtil as scrollUtil
 import util.countUtil as countUtil
 import util.clickUtil as clickUtil
+import util.loginUtil as loginUtil
+import util.accessShoppingUtil as accessShoppingUtil
 
 import allElements
 
 maxPage = 5
-maxFind = 3
+maxFind = 2
 
-def findTargetByMidValue(driver, mid_value, isPriceComparisonSite):
+def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite):
     find = False
     ranking = 0
     count = 1
@@ -34,11 +36,7 @@ def findTargetByMidValue(driver, mid_value, isPriceComparisonSite):
                 for i in range(1, 11):
                     try:
                         if count == maxPage:
-                            element = allElements.getSearchInShopping(driver)
-                            element.click()
-                            time.sleep(1)
-                            element = allElements.getSearchIconInShopping(driver)
-                            element.click()
+                            tryFindAgain(driver, keyword)
                             ranking = 0
                             count = 1
                             tryFinding = tryFinding + 1
@@ -57,6 +55,10 @@ def findTargetByMidValue(driver, mid_value, isPriceComparisonSite):
                 #     tryFinding = tryFinding + 1
                 # except:
                 #     pass
+
+def tryFindAgain(driver, keyword):
+    loginUtil.naverHome(driver)
+    accessShoppingUtil.access_random(driver, keyword)
 
 def findMoreProductButtonInPriceComparisonSite(driver):
     element = allElements.getSellWhere(driver)

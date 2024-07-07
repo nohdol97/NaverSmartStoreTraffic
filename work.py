@@ -15,7 +15,7 @@ def mobileNaverShopping(driver, mid_value, keyword):
         return False
 
     # 아래까지 스크롤 하면서 찾기
-    page, ranking = findUtil.findTargetByMidValue(driver, mid_value, False)
+    page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False)
     
     print(f"mid_value({mid_value}), ranking({ranking})")
 
@@ -32,10 +32,10 @@ def mobilePriceComparisonNaverShopping(driver, mid_value, price_comparison_mid, 
         return False
 
     # 아래까지 스크롤 하면서 찾기
-    page, ranking = findUtil.findTargetByMidValue(driver, price_comparison_mid, False)
+    page, ranking = findUtil.findTargetByMidValue(driver, price_comparison_mid, keyword, False)
 
     # 가격 비교 사이트 내에서 아래까지 스크롤 하면서 찾기
-    page, ranking = findUtil.findTargetByMidValue(driver, mid_value, True)
+    page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, True)
 
     # 찾은 상세페이지 체류
     stayUtil.stay_target(driver)
