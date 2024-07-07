@@ -28,7 +28,7 @@ def findTargetByMidValue(driver, mid_value, isPriceComparisonSite):
                 try:
                     ranking = ranking + countUtil.getFindCountByMidValue(driver, mid_value)
                 except:
-                    pass
+                    return page, ranking
                 return page, ranking
             else:
                 ranking = ranking + countUtil.getCountAll(driver)
