@@ -4,6 +4,8 @@ from selenium.webdriver.common.keys import Keys
 import pyperclip as pp
 from random import uniform
 
+import allElements
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # from timeValues import getWaitLoadingTime
 import allElements
@@ -15,7 +17,7 @@ def naverHome(driver):
 
 def inputkeys(driver, someWord : str, placeholder : str):
     pp.copy(someWord)
-    holderInput = driver.find_element(By.XPATH, f"//input[@placeholder='{placeholder}']")
+    holderInput = allElements.getPlaceHolder(driver, placeholder)
     holderInput.click()
     pp.copy(someWord)
     time.sleep(uniform(1.0, 2.0))
@@ -34,15 +36,16 @@ def login_with_account(driver, naverid, naverpassword):
             break
         driver.get("https://nid.naver.com/nidlogin.login?svctype=262144&url=http://m.naver.com/aside/")
         time.sleep(2)
-        inputkeys(driver, naverid, "아이디")
-        inputkeys(driver, naverpassword, "비밀번호")
+        inputkeys(driver, naverid, "id")
+        inputkeys(driver, naverpassword, "pw")
         try:
             element = allElements.getStayLoginState(driver)
             element.click()
         except:
             pass
         time.sleep(1)
-        driver.find_element(By.XPATH, f"//input[@placeholder='비밀번호']").send_keys(Keys.ENTER)
+        element = allElements.getPlaceHolder(driver, "pw")
+        element.send_keys(Keys.ENTER)
         time.sleep(1)
         fail_login = failLogin(driver)
 

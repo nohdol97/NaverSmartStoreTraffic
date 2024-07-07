@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+
+def getPlaceHolder(driver, placeHolder):
+    return driver.find_element(By.XPATH, f'//*[@id="{placeHolder}"]')
 
 def getShoppingPan(driver): # 네이버 모바일에서 검색창 아래 쇼핑판
     return driver.find_element(By.XPATH, '//*[@id="HOME_SHORTCUT"]/ul/li[2]/a/div/picture/img')
