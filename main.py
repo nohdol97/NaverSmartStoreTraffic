@@ -27,26 +27,29 @@ def execute_scheduled_tasks():
     print("Scheduled tasks executed at 23:45")
 
 def check_end_time(executor, stop_event):
+    task_executed = False
     while not stop_event.is_set():
         now = datetime.now()
         end_time = now.replace(hour=23, minute=45, second=0, microsecond=0)
 
-        if now >= end_time:
+        if now >= end_time and not task_executed:
             # 종료 시간 도달, 모든 작업을 종료
             print("종료 시간 도달, 모든 작업을 종료합니다.")
             stop_event.set()  # 작업 종료 신호 설정
             executor.shutdown(wait=True)
             execute_scheduled_tasks()
+            task_executed = True
 
-            # 00:00까지 대기
+            # 00:02까지 대기
             next_start_time = now + timedelta(days=1)
-            next_start_time = next_start_time.replace(hour=0, minute=0, second=0, microsecond=0)
+            next_start_time = next_start_time.replace(hour=0, minute=2, second=0, microsecond=0)
             while datetime.now() < next_start_time:
                 time.sleep(10)
 
             # 작업 재개
             print("작업 재개 시간 도달, 모든 작업을 재개합니다.")
             stop_event.clear()  # 작업 재개 신호 설정 해제
+            task_executed = False  # 작업 재개 시 플래그 초기화
             return  # 함수 종료로 main() 함수 재호출을 방지
 
         time.sleep(10)
@@ -73,7 +76,7 @@ if __name__ == "__main__":
         main()
         # 다음 실행 시간을 계산
         now = datetime.now()
-        next_start_time = now.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+        next_start_time = now.replace(hour=0, minute=5, second=0, microsecond=0) + timedelta(days=1)
         sleep_duration = (next_start_time - now).total_seconds()
         print(f"Sleeping for {sleep_duration} seconds until next cycle.")
         time.sleep(sleep_duration)
