@@ -33,7 +33,8 @@ def access_by_shoppingPan(driver, keyword):
     # 키워드 검색
     search_box = allElements.getQuery(driver)
     search_box.send_keys(keyword)
-    search_box.send_keys(Keys.RETURN)
+    time.sleep(1)
+    search_box.send_keys(Keys.ENTER)
     time.sleep(timeValues.getWaitLoadingTime())
 
     # 쇼핑 클릭
@@ -50,7 +51,8 @@ def access_by_totalSearch_shopping(driver, keyword):
     # 키워드 검색
     search_box = allElements.getQuery(driver)
     search_box.send_keys(keyword)
-    search_box.send_keys(Keys.RETURN)
+    time.sleep(1)
+    search_box.send_keys(Keys.ENTER)
     time.sleep(timeValues.getWaitLoadingTime())
 
     # 쇼핑 클릭
@@ -67,7 +69,8 @@ def access_by_totalSearch_more_shopping(driver, keyword):
     # 키워드 검색
     search_box = allElements.getQuery(driver)
     search_box.send_keys(keyword)
-    search_box.send_keys(Keys.RETURN)
+    time.sleep(1)
+    search_box.send_keys(Keys.ENTER)
     time.sleep(timeValues.getWaitLoadingTime())
 
     # 쇼핑 더보기 클릭
