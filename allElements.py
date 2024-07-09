@@ -22,11 +22,11 @@ def getNextButton(driver, i): # 네이버 모바일 쇼핑 내에서 다음 페�
     return driver.find_element(By.XPATH, f'//*[@id="__next"]/div/div[2]/div[{i}]/div/button[2]')
 
 def getMidValueProduct(driver, mid_value, i): # 상품의 mid_value 로 위치 파악
-    findAd = driver.find_element(By.XPATH, f'//*[@id="_sr_lst_{mid_value}"]')
-    if '광고' not in findAd.text:
-        return driver.find_element(By.XPATH, f'//*[@id="_sr_lst_{mid_value}"]/div/div[{i}]/a')
-    else:
-        return None
+    findAd = driver.find_elements(By.XPATH, f'//*[@id="_sr_lst_{mid_value}"]')
+    for element in findAd:
+        if '광고' not in element.text:
+            child_a = element.find_element(By.XPATH, f'./div/div[{i}]/a')
+            return child_a
 
 def getPriceComparisonMidValueProduct(driver, mid_value): # 가격 비교 사이트 내에서 mid_value 로 위치 파악
     return driver.find_element(By.XPATH, f"//*[@id='section-price']//a[contains(@href, 'nvMid={mid_value}')]")

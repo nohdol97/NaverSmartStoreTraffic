@@ -1,7 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
 import time
-import threading
-from datetime import datetime, timedelta
+import schedule
+from threading import Thread
 
 import task
 import timeValues
@@ -24,18 +24,16 @@ def execute_scheduled_tasks():
 
     print("Scheduled tasks executed at 23:55")
 
-def schedule_daily_task(execute_time, task_function):
-    def scheduler():
-        while True:
-            now = datetime.now()
-            next_run = now.replace(hour=execute_time.hour, minute=execute_time.minute, second=0, microsecond=0)
-            if now >= next_run:
-                next_run += timedelta(days=1)
-            sleep_time = (next_run - now).total_seconds()
-            time.sleep(sleep_time)
-            task_function()
+def run_scheduler():
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
-    threading.Thread(target=scheduler, daemon=True).start()
+def start_scheduler():
+    schedule.every().day.at("23:55").do(execute_scheduled_tasks)
+    
+    scheduler_thread = Thread(target=run_scheduler)
+    scheduler_thread.start()
 
 def main():
     with ThreadPoolExecutor(max_workers=threadNum) as executor:
@@ -44,9 +42,6 @@ def main():
             futures.append(executor.submit(task.start, i))
             time.sleep(timeValues.getWaitStartThreadTime()) # 시간 간격으로 스레드 실행
 
-    # Schedule the daily task
-    execute_time = datetime.strptime("23:55", "%H:%M").time()
-    schedule_daily_task(execute_time, execute_scheduled_tasks)
-
 if __name__ == "__main__":
+    start_scheduler()
     main()
