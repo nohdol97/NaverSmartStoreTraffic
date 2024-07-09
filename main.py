@@ -13,70 +13,40 @@ startNum = threadNum * 0
 
 def execute_scheduled_tasks():
     try:
-        print("Executing get_product...")
         requestData.get_product()
     except Exception as e:
         print(f"Exception in get_product: {e}")
 
     try:
-        print("Executing get_ip...")
         requestData.get_ip()
     except Exception as e:
         print(f"Exception in get_ip: {e}")
 
-    print("Scheduled tasks executed at 23:45")
+    print("Scheduled tasks executed at 23:55")
 
-def check_end_time(executor, stop_event):
-    task_executed = False
-    while not stop_event.is_set():
-        now = datetime.now()
-        end_time = now.replace(hour=23, minute=45, second=0, microsecond=0)
+def schedule_daily_task(execute_time, task_function):
+    def scheduler():
+        while True:
+            now = datetime.now()
+            next_run = now.replace(hour=execute_time.hour, minute=execute_time.minute, second=0, microsecond=0)
+            if now >= next_run:
+                next_run += timedelta(days=1)
+            sleep_time = (next_run - now).total_seconds()
+            time.sleep(sleep_time)
+            task_function()
 
-        if now >= end_time and not task_executed:
-            # 종료 시간 도달, 모든 작업을 종료
-            print("종료 시간 도달, 모든 작업을 종료합니다.")
-            stop_event.set()  # 작업 종료 신호 설정
-            executor.shutdown(wait=True)
-            execute_scheduled_tasks()
-            task_executed = True
-
-            # 00:02까지 대기
-            next_start_time = now + timedelta(days=1)
-            next_start_time = next_start_time.replace(hour=0, minute=2, second=0, microsecond=0)
-            while datetime.now() < next_start_time:
-                time.sleep(10)
-
-            # 작업 재개
-            print("작업 재개 시간 도달, 모든 작업을 재개합니다.")
-            stop_event.clear()  # 작업 재개 신호 설정 해제
-            task_executed = False  # 작업 재개 시 플래그 초기화
-            return  # 함수 종료로 main() 함수 재호출을 방지
-
-        time.sleep(10)
+    threading.Thread(target=scheduler, daemon=True).start()
 
 def main():
-    stop_event = threading.Event()
     with ThreadPoolExecutor(max_workers=threadNum) as executor:
         futures = []
-        end_time_thread = threading.Thread(target=check_end_time, args=(executor, stop_event))
-        end_time_thread.start()
-
         for i in range(startNum, startNum + threadNum):
             futures.append(executor.submit(task.start, i))
-            time.sleep(timeValues.getWaitStartThreadTime())  # 시간 간격으로 스레드 실행
+            time.sleep(timeValues.getWaitThreadTime()) # 시간 간격으로 스레드 실행
 
-        for future in futures:
-            try:
-                future.result()  # 작업이 완료될 때까지 대기
-            except Exception as e:
-                print(f"Exception in task: {e}")
+    # Schedule the daily task
+    execute_time = datetime.strptime("23:55", "%H:%M").time()
+    schedule_daily_task(execute_time, execute_scheduled_tasks)
 
 if __name__ == "__main__":
-    while True:
-        main()
-        # 다음 실행 시간을 계산
-        now = datetime.now()
-        next_start_time = now.replace(hour=0, minute=5, second=0, microsecond=0) + timedelta(days=1)
-        sleep_duration = (next_start_time - now).total_seconds()
-        print(f"Sleeping for {sleep_duration} seconds until next cycle.")
-        time.sleep(sleep_duration)
+    main()

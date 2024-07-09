@@ -1,4 +1,5 @@
 import random, time
+from datetime import datetime, timedelta
 
 # 유입할 상품 목록
 def getMidValueKeywordList():
@@ -49,8 +50,14 @@ def checkFinish():
         for line in lines:
             parts = line.split(',')
             if int(parts[-1]) > 0:
-                return False
-        return True
+                return
+        
+        # 끝났다면 다음날 까지 대기, main 에서 23시 55분에 다시 채워줌
+        now = datetime.now()
+        print(f"finish time: {now}")
+        next_midnight = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+        sleep_time = (next_midnight - now).total_seconds()
+        time.sleep(sleep_time)
     except:
         time.sleep(3)
         checkFinish()

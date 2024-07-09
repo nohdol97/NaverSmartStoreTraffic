@@ -1,18 +1,31 @@
-import requests
+import requests, time
 
 # 서버의 IP 주소와 포트
 BASE_URL = 'http://154.90.62.39:5000'
 
 def save_product_data(product_data):
-    with open('product_list.txt', 'w', encoding='utf-8') as file:
-        for item in product_data:
-            line = ','.join(map(str, item))
-            file.write(line + '\n')
+    try:
+        with open('product_list.txt', 'r', encoding='utf-8') as file:
+            lines = file.readlines()
+            for line in lines:
+                print(line.strip())
+        
+        with open('product_list.txt', 'w', encoding='utf-8') as file:
+            for item in product_data:
+                line = ','.join(map(str, item))
+                file.write(line + '\n')
+    except:
+        time.sleep(3)
+        save_product_data(product_data)
 
 def save_proxy_ips(proxy_ips):
-    with open('hiPaiIp.txt', 'w', encoding='utf-8') as file:
-        for ip in proxy_ips:
-            file.write(ip + '\n')
+    try:
+        with open('hiPaiIp.txt', 'w', encoding='utf-8') as file:
+            for ip in proxy_ips:
+                file.write(ip + '\n')
+    except:
+        time.sleep(3)
+        save_proxy_ips(proxy_ips)
 
 def get_product():
     response = requests.get(f'{BASE_URL}/get_product')

@@ -7,13 +7,9 @@ import driverInfo
 import util.loginUtil as loginUtil
 import hiPaiProxy
 
-from datetime import datetime
-
 def start(profileNum):
     while True:
-        if productList.checkFinish():
-            print(f"finish time: {datetime.now()}")
-            break
+        productList.checkFinish()
 
         driver, temp_profile_dir, proxy = driverInfo.create_driver(profileNum)
 
