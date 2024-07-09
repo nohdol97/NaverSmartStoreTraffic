@@ -1,4 +1,4 @@
-import random, time
+import random, time, os
 from datetime import datetime, timedelta
 
 # 유입할 상품 목록
@@ -44,13 +44,13 @@ def checkProductNum(midValueKeywordStr):
 
 def checkFinish():
     try:
-        with open('product_list.txt', 'r', encoding='utf-8') as file:
-            lines = [line.strip() for line in file]
-
-        for line in lines:
-            parts = line.split(',')
-            if int(parts[-1]) > 0:
-                return
+        if os.path.exists("hiPaiIp.txt"):
+            with open('product_list.txt', 'r', encoding='utf-8') as file:
+                lines = [line.strip() for line in file]
+            for line in lines:
+                parts = line.split(',')
+                if int(parts[-1]) > 0:
+                    return
         
         # 끝났다면 다음날 까지 대기, main 에서 23시 55분에 다시 채워줌
         now = datetime.now()
