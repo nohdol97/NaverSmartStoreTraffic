@@ -1,16 +1,19 @@
-import requests, time
+import requests, time, os
 
 # 서버의 IP 주소와 포트
 BASE_URL = 'http://154.90.62.39:5000'
 
 def save_product_data(product_data):
     try:
-        with open('product_list.txt', 'r', encoding='utf-8') as file:
-            lines = file.readlines()
-            for line in lines:
-                print(line.strip())
+        file_path = 'product_list.txt'
+
+        if os.path.exists(file_path):
+            with open(file_path, 'r', encoding='utf-8') as file:
+                lines = file.readlines()
+                for line in lines:
+                    print(line.strip())
         
-        with open('product_list.txt', 'w', encoding='utf-8') as file:
+        with open(file_path, 'w', encoding='utf-8') as file:
             for item in product_data:
                 line = ','.join(map(str, item))
                 file.write(line + '\n')
