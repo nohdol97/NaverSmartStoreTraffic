@@ -44,7 +44,7 @@ def start(profileNum):
             except Exception as e:
                 print(f"Error: {e}")
                 traceback.print_exc()
-            time.sleep(timeValues.getWaitLoadingTime())
+            time.sleep(timeValues.getWaitStartThreadTime())
         driver.quit()
 
         # 끝났으면 사용한 proxy를 파일의 마지막에 다시 추가
