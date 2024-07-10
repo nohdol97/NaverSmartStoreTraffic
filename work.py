@@ -3,7 +3,7 @@ import util.accessShoppingUtil as accessShoppingUtil
 import util.stayUtil as stayUtil
 import allElements
 
-import time
+import threading
 
 # ip 하나로 작업할 모든 상품 조회 하고, main 에서 ip 변경하고 작업
 def mobileNaverShopping(driver, mid_value, keyword):
@@ -20,7 +20,10 @@ def mobileNaverShopping(driver, mid_value, keyword):
     print(f"mid_value({mid_value}), ranking({ranking})")
 
     # 찾은 상세페이지 체류
-    stayUtil.stay_target(driver)
+    stay_successful = stay_target_with_timeout(driver, timeout=30)
+    if not stay_successful:
+        print("stay_target timed out, moving to the next step.")
+
     return True
 
 def mobilePriceComparisonNaverShopping(driver, mid_value, price_comparison_mid, keyword):
@@ -38,7 +41,10 @@ def mobilePriceComparisonNaverShopping(driver, mid_value, price_comparison_mid, 
     page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, True)
 
     # 찾은 상세페이지 체류
-    stayUtil.stay_target(driver)
+    stay_successful = stay_target_with_timeout(driver, timeout=30)
+    if not stay_successful:
+        print("stay_target timed out, moving to the next step.")
+
     return True
 
 
@@ -49,3 +55,23 @@ def mobileNaverImageShopping(driver, url):
 
     # 찾은 상세페이지 체류
     stayUtil.stay_target(driver)
+
+def stay_target_with_timeout(driver, timeout):
+    """
+    Run stayUtil.stay_target with a timeout. If the function takes longer than
+    the specified timeout, it will be terminated and return False.
+    """
+    result = [False]  # Using a list to hold the result because lists are mutable
+
+    def target():
+        stayUtil.stay_target(driver)
+        result[0] = True
+
+    thread = threading.Thread(target=target)
+    thread.start()
+    thread.join(timeout)
+
+    if thread.is_alive():
+        # The stay_target function is still running, implying it timed out.
+        return False
+    return result[0]
