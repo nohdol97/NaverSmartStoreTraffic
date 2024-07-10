@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 def getMidValueKeywordList():
     try:
         with open('product_list.txt', 'r', encoding='utf-8') as file:
-            lines = [line.strip() for line in file]
+            lines = [line.strip() for line in file if line.strip()]  # 빈 줄을 무시
         mid_value_keyword = lines
         random.shuffle(mid_value_keyword)  # 셔플
         return mid_value_keyword
@@ -16,7 +16,7 @@ def getMidValueKeywordList():
 def decreaseNum(mid_value):
     try:
         with open('product_list.txt', 'r', encoding='utf-8') as file:
-            lines = [line.strip() for line in file]
+            lines = [line.strip() for line in file if line.strip()]  # 빈 줄을 무시
 
         updated_lines = []
 
@@ -46,7 +46,7 @@ def checkFinish():
     try:
         if os.path.exists("hiPaiIp.txt"):
             with open('product_list.txt', 'r', encoding='utf-8') as file:
-                lines = [line.strip() for line in file]
+                lines = [line.strip() for line in file if line.strip()]  # 빈 줄을 무시
             for line in lines:
                 parts = line.split(',')
                 if int(parts[-1]) > 0:
