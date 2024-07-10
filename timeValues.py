@@ -1,10 +1,10 @@
 import random
 
 def getWaitStartThreadTime():
-    return random.uniform(20, 25)
+    return random.uniform(5, 10)
 
 def getWaitLoadingTime():
-    return random.uniform(3, 5)
+    return random.uniform(2, 4)
 
 def getWaitScrollTime():
     return random.uniform(1, 2)
@@ -19,4 +19,4 @@ def getWaitImageProductLoadingTime():
     return random.uniform(5, 10)
 
 def getWaitRepeatingTime():
-    return random.uniform(10, 20)
+    return random.uniform(3, 5)
