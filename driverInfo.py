@@ -29,7 +29,7 @@ def create_driver(profileNum):
             # Chrome option 설정
             chrome_options = webdriver.ChromeOptions()
             chromeOptions.addOptimization(chrome_options, temp_profile_dir)
-            chromeOptions.addMobile(chrome_options)
+            # chromeOptions.addMobile(chrome_options)
             hiPaiProxy = chromeOptions.addProxy(chrome_options)
 
             # Xvfb 설정
@@ -46,6 +46,7 @@ def create_driver(profileNum):
 
             return driver, temp_profile_dir, hiPaiProxy
         except Exception as e:
+            profileNum = profileNum + 3
             print(f"Error Creating driverInfo file: {e}")
             time.sleep(3)
             pass
