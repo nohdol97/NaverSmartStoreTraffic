@@ -40,6 +40,9 @@ def addMobile(chrome_options):
 def addProxy(chrome_options):
     # hiPai Proxy 설정
     hiPaiIp = hiPaiProxy.getProxyIp()
+    # 서버 자체 IP 로 접근
+    if hiPaiIp == 0:
+        return hiPaiIp
     proxy = Proxy()
     proxy.proxy_type = ProxyType.MANUAL
     proxy.http_proxy = f"{hiPaiIp}"
