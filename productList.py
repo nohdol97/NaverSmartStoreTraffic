@@ -38,7 +38,7 @@ def decreaseNum(mid_value):
 
 def checkProductNum(midValueKeywordStr):
     parts = midValueKeywordStr.split(',')
-    if int(parts[-1]) == 0:
+    if parts[-1] == '0':
         return False
     return True
 
