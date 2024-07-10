@@ -29,7 +29,7 @@ def create_driver(profileNum):
             # Chrome option 설정
             chrome_options = webdriver.ChromeOptions()
             chromeOptions.addOptimization(chrome_options, temp_profile_dir)
-            # chromeOptions.addMobile(chrome_options)
+            chromeOptions.addMobile(chrome_options)
             hiPaiProxy = chromeOptions.addProxy(chrome_options)
 
             # Xvfb 설정
