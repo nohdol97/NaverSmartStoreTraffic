@@ -1,6 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
 import time
-import schedule
 from threading import Thread, Event
 from datetime import datetime
 
@@ -32,7 +31,6 @@ def run_scheduler(stop_event):
         if now.hour == 23 and now.minute == 55 and now.second == 0:
             execute_scheduled_tasks()
             time.sleep(1)  # 1초 대기하여 중복 실행 방지
-        schedule.run_pending()
         time.sleep(1)
 
 def start_scheduler(stop_event):
