@@ -46,7 +46,7 @@ def start(profileNum, startTime):
                         else:
                             # 실패했으면 제거한 proxy를 파일의 마지막에 다시 추가
                             hiPaiProxy.addProxyIp(proxy)
-                            productList.errorProduct(mid_value)
+                            # productList.errorProduct(mid_value)
                     else:
                         break
             except Exception as e:
