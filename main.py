@@ -24,13 +24,13 @@ def main(startTime):
 
 if __name__ == "__main__":
     while True:
-        # requestData.get_product()
-        # requestData.get_ip()
-        # # startNum = setValues.threadNum // 2
-        # # makeCache(0, startNum)
-        # # time.sleep(10)
-        # # makeCache(startNum, setValues.threadNum)
-        # makeCache(0, setValues.threadNum)
+        requestData.get_product()
+        requestData.get_ip()
+        # startNum = setValues.threadNum // 2
+        # makeCache(0, startNum)
+        # time.sleep(10)
+        # makeCache(startNum, setValues.threadNum)
+        makeCache(0, setValues.threadNum)
         startTime = datetime.now()
         main(startTime)
         now = datetime.now()
