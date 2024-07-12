@@ -16,7 +16,7 @@ def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite, isCl
     count = 1
     tryFinding = 0
     isInMorePriceComarisonSite = False
-    while not find or tryFinding < setValues.maxFind:
+    while not find and tryFinding < setValues.maxFind:
             find = findByMidValue(driver, mid_value, isPriceComparisonSite, isInMorePriceComarisonSite, isClick)
             if find:
                 time.sleep(3)

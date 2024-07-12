@@ -8,10 +8,10 @@ import cacheMaker
 import requestData
 import setValues
 
-def makeCache():
-    with ThreadPoolExecutor(max_workers=setValues.threadNum) as executor:
+def makeCache(startNum, endNum):
+    with ThreadPoolExecutor(max_workers=endNum-startNum) as executor:
         futures = []
-        for i in range(0, setValues.threadNum):
+        for i in range(startNum, endNum):
             futures.append(executor.submit(cacheMaker.create_cache, i))
             time.sleep(timeValues.getWaitStartThreadTime()) # 시간 간격으로 스레드 실행
 
@@ -26,7 +26,10 @@ if __name__ == "__main__":
     while True:
         requestData.get_product()
         requestData.get_ip()
-        makeCache()
+        startNum = setValues.threadNum // 2
+        makeCache(0, startNum)
+        makeCache(startNum, setValues.threadNum)
+        time.sleep(10)
         startTime = datetime.now()
         main(startTime)
         now = datetime.now()
