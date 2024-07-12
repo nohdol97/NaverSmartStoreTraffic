@@ -6,5 +6,5 @@ maxPage = 5
 maxFind = 3
 
 # 요청할 상품 수
-request_amount = 10000
+request_amount = 7000
 unit = 500
