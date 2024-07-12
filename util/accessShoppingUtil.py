@@ -5,7 +5,12 @@ import timeValues as timeValues
 import util.randomUtil as randomUtil
 import allElements
 
+def access_direct(driver, keyword):
+    url = f"https://msearch.shopping.naver.com/search/all?query={keyword}"
+    driver.get(url)
+
 def access_random(driver, keyword):
+    driver.get("https://m.naver.com/")
     randomValue = randomUtil.get_random_value()
     try:
         # if randomValue < 0.3: # 30퍼 확률

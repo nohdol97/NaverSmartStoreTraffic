@@ -5,18 +5,11 @@ from seleniumwire import webdriver
 import os, time, shutil
 import chromeOptions
 
-previous_number = 0
-
-def get_new_cache_number(previous_number):
-    return (previous_number + 3) % 10
-
 def create_driver(profileNum):
     for i in range(10):
         try:
             # 프로필 디렉토리 경로 지정
-            global previous_number
-            cache_number = get_new_cache_number(previous_number)
-            original_profile_dir = os.path.join(os.getcwd(), f"chrome_profile{cache_number}")
+            original_profile_dir = os.path.join(os.getcwd(), f"chrome_profile{profileNum}")
             temp_profile_dir = os.path.join(os.getcwd(), f"temp_chrome_profile{profileNum}")
 
             # 기존 임시 프로필 디렉토리가 있다면 삭제
@@ -46,7 +39,6 @@ def create_driver(profileNum):
 
             return driver, temp_profile_dir, hiPaiProxy
         except Exception as e:
-            profileNum = profileNum + 3
             print(f"Error Creating driverInfo file: {e}")
             time.sleep(3)
             pass

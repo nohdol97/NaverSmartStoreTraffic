@@ -8,21 +8,17 @@ import util.loginUtil as loginUtil
 import util.accessShoppingUtil as accessShoppingUtil
 
 import allElements
+import setValues
 
-maxPage = 5
-maxFind = 2
-
-def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite):
+def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite, isClick):
     find = False
     ranking = 0
     count = 1
     tryFinding = 0
     isInMorePriceComarisonSite = False
-    while not find or tryFinding < maxFind:
-            find = findByMidValue(driver, mid_value, isPriceComparisonSite, isInMorePriceComarisonSite)
+    while not find or tryFinding < setValues.maxFind:
+            find = findByMidValue(driver, mid_value, isPriceComparisonSite, isInMorePriceComarisonSite, isClick)
             if find:
-                if isPriceComparisonSite:
-                    time.sleep(3)
                 time.sleep(3)
                 page = count
                 try:
@@ -35,7 +31,7 @@ def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite):
             if not isPriceComparisonSite:
                 for i in range(1, 11):
                     try:
-                        if count == maxPage:
+                        if count == setValues.maxPage:
                             tryFindAgain(driver, keyword)
                             ranking = 0
                             count = 1
@@ -75,7 +71,7 @@ def findMoreProductButtonInPriceComparisonSite(driver):
         clickUtil.clickTarget(driver, element) # 현재 탭에서 열기 TODO 새 탭에서 열리고 있어서 수정 필요
         return element
     
-def findByMidValue(driver, mid_value, isPriceComparisonSite, isInMorePriceComarisonSite):
+def findByMidValue(driver, mid_value, isPriceComparisonSite, isInMorePriceComarisonSite, isClick):
     # 맨 아래로 빠르게 스크롤
     scrollUtil.scrollToEndFast(driver)
     
@@ -95,8 +91,8 @@ def findByMidValue(driver, mid_value, isPriceComparisonSite, isInMorePriceComari
                 offset = -150  # 요소 위치에서 위로 스크롤할 픽셀 값
                 driver.execute_script(f"window.scrollTo(0, {element_location + offset});")
                 time.sleep(timeValues.getWaitLoadingTime())
-                
-                clickUtil.clickTarget(driver, element)
+                if isClick: # cache 만들때는 클릭 안함
+                    clickUtil.clickTarget(driver, element)
                 return element
     except:
         return False

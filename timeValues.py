@@ -20,3 +20,6 @@ def getWaitImageProductLoadingTime():
 
 def getWaitRepeatingTime():
     return random.uniform(3, 5)
+
+def getWaitLoadingTimeForCache():
+    return random.uniform(7, 15)

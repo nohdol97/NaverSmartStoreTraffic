@@ -6,10 +6,6 @@ from random import uniform
 
 import allElements
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-# from timeValues import getWaitLoadingTime
-import allElements
-
 def naverHome(driver):
     # 네이버 모바일 페이지 접속
     url = "https://m.naver.com/"

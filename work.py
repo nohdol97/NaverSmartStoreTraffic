@@ -7,43 +7,31 @@ import threading
 
 # ip 하나로 작업할 모든 상품 조회 하고, main 에서 ip 변경하고 작업
 def mobileNaverShopping(driver, mid_value, keyword):
-    # 쇼핑판(불가), 상품 더 검색, 쇼핑
-    accessShoppingUtil.access_random(driver, keyword)
-
     # driver 에 해당 ip 접근 불가 있으면 return False
     if allElements.findError(driver):
         return False
 
     # 아래까지 스크롤 하면서 찾기
-    page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False)
-    
-    print(f"mid_value({mid_value}), ranking({ranking})")
+    page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, True)
 
     # 찾은 상세페이지 체류
     stay_successful = stay_target_with_timeout(driver, timeout=30)
-    if not stay_successful:
-        print("stay_target timed out, moving to the next step.")
 
     return True
 
 def mobilePriceComparisonNaverShopping(driver, mid_value, price_comparison_mid, keyword):
-    # 쇼핑판(불가), 상품 더 검색, 쇼핑
-    accessShoppingUtil.access_random(driver, keyword)
-
     # driver 에 해당 ip 접근 불가 있으면 return False
     if allElements.findError(driver):
         return False
 
     # 아래까지 스크롤 하면서 찾기
-    page, ranking = findUtil.findTargetByMidValue(driver, price_comparison_mid, keyword, False)
+    page, ranking = findUtil.findTargetByMidValue(driver, price_comparison_mid, keyword, False, True)
 
     # 가격 비교 사이트 내에서 아래까지 스크롤 하면서 찾기
-    page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, True)
+    page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, True, True)
 
     # 찾은 상세페이지 체류
-    stay_successful = stay_target_with_timeout(driver, timeout=30)
-    if not stay_successful:
-        print("stay_target timed out, moving to the next step.")
+    stay_successful = stay_target_with_timeout(driver, timeout=35)
 
     return True
 

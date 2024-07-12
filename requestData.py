@@ -4,31 +4,19 @@ import requests, time, os
 BASE_URL = 'http://154.90.62.39:5000'
 
 def save_product_data(product_data):
-    try:
-        file_path = 'product_list.txt'
-
-        if os.path.exists(file_path):
-            with open(file_path, 'r', encoding='utf-8') as file:
-                lines = file.readlines()
-                for line in lines:
-                    print(line.strip())
-        
-        with open(file_path, 'w', encoding='utf-8') as file:
-            for item in product_data:
-                line = ','.join(map(str, item))
-                file.write(line + '\n')
-    except:
-        time.sleep(3)
-        save_product_data(product_data)
+    file_path = 'product_list.txt'
+    
+    with open(file_path, 'w', encoding='utf-8') as file:
+        for item in product_data:
+            line = ','.join(map(str, item))
+            file.write(line + '\n')
 
 def save_proxy_ips(proxy_ips):
-    try:
-        with open('hiPaiIp.txt', 'w', encoding='utf-8') as file:
-            for ip in proxy_ips:
-                file.write(ip + '\n')
-    except:
-        time.sleep(3)
-        save_proxy_ips(proxy_ips)
+    file_path = 'hiPaiIp.txt'
+    
+    with open(file_path, 'w', encoding='utf-8') as file:
+        for ip in proxy_ips:
+            file.write(ip + '\n')
 
 def get_product():
     response = requests.get(f'{BASE_URL}/get_product')
