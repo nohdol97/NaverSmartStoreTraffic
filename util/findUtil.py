@@ -32,7 +32,7 @@ def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite, isCl
                 for i in range(1, 11):
                     try:
                         if count == setValues.maxPage:
-                            tryFindAgain(driver, keyword)
+                            accessShoppingUtil.access_direct(driver, keyword)
                             ranking = 0
                             count = 1
                             tryFinding = tryFinding + 1
@@ -52,10 +52,6 @@ def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite, isCl
                 # except:
                 #     pass
     return find, None, None
-
-def tryFindAgain(driver, keyword):
-    loginUtil.naverHome(driver)
-    accessShoppingUtil.access_random(driver, keyword)
 
 def findMoreProductButtonInPriceComparisonSite(driver):
     element = allElements.getSellWhere(driver)
