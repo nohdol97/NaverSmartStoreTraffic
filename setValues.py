@@ -1,5 +1,5 @@
 # 쓰레드 풀 설정
-threadNum = 7
+threadNum = 5
 
 # 찾는 페이지 수, 시도 횟수
 maxPage = 5
