@@ -1,4 +1,6 @@
-import requests, time, os
+import requests
+
+import setValues
 
 # 서버의 IP 주소와 포트
 BASE_URL = 'http://154.90.62.39:5000'
@@ -13,13 +15,14 @@ def save_product_data(product_data):
 
 def save_proxy_ips(proxy_ips):
     file_path = 'hiPaiIp.txt'
-    
+
     with open(file_path, 'w', encoding='utf-8') as file:
         for ip in proxy_ips:
             file.write(ip + '\n')
 
 def get_product():
-    response = requests.get(f'{BASE_URL}/get_product')
+    params = {'amount': setValues.request_amount, 'unit': setValues.unit}
+    response = requests.get(f'{BASE_URL}/get_product', params=params)
     if response.status_code == 200:
         product_data = response.json().get('data', [])
         save_product_data(product_data)
