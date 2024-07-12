@@ -8,6 +8,10 @@ import allElements
 def access_direct(driver, keyword):
     url = f"https://msearch.shopping.naver.com/search/all?query={keyword}"
     driver.get(url)
+    # driver 에 해당 ip 접근 불가 있으면 return False
+    if allElements.findError(driver):
+        return False
+    return True
 
 def access_random(driver, keyword):
     driver.get("https://m.naver.com/")

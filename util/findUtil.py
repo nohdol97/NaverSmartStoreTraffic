@@ -17,40 +17,41 @@ def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite, isCl
     tryFinding = 0
     isInMorePriceComarisonSite = False
     while not find and tryFinding < setValues.maxFind:
-            find = findByMidValue(driver, mid_value, isPriceComparisonSite, isInMorePriceComarisonSite, isClick)
-            if find:
-                time.sleep(3)
-                page = count
-                try:
-                    ranking = ranking + countUtil.getFindCountByMidValue(driver, mid_value)
-                except:
-                    return find, page, ranking
+        find = findByMidValue(driver, mid_value, isPriceComparisonSite, isInMorePriceComarisonSite, isClick)
+        if find:
+            time.sleep(3)
+            page = count
+            try:
+                ranking = ranking + countUtil.getFindCountByMidValue(driver, mid_value)
+            except:
                 return find, page, ranking
-            else:
-                ranking = ranking + countUtil.getCountAll(driver)
-            if not isPriceComparisonSite:
-                for i in range(1, 11):
-                    try:
-                        if count == setValues.maxPage:
-                            accessShoppingUtil.access_direct(driver, keyword)
-                            ranking = 0
-                            count = 1
-                            tryFinding = tryFinding + 1
-                            break
-                        # 찾는게 없으면 다음 버튼 클릭
-                        if clickUtil.clickNext(driver, i):
-                            count = count + 1
-                            break
-                    except:
-                        continue
-            else:
-                raise ValueError('가격 비교 사이트 내에서 "전체 판매처 보러가기" 현재 새탭에서 열려서 문제')
-                # try:
-                #     element = findMoreProductButtonInPriceComparisonSite(driver)
-                #     isInMorePriceComarisonSite = True
-                #     tryFinding = tryFinding + 1
-                # except:
-                #     pass
+            return find, page, ranking
+        else:
+            ranking = ranking + countUtil.getCountAll(driver)
+        if not isPriceComparisonSite:
+            for i in range(1, 11):
+                try:
+                    if count == setValues.maxPage:
+                        accessShoppingUtil.access_direct(driver, keyword)
+                        ranking = 0
+                        count = 1
+                        tryFinding = tryFinding + 1
+                        break
+                    # 찾는게 없으면 다음 버튼 클릭
+                    if clickUtil.clickNext(driver, i):
+                        count = count + 1
+                        break
+                except:
+                    continue
+        else:
+            tryFinding = tryFinding + 1
+            # raise ValueError('가격 비교 사이트 내에서 "전체 판매처 보러가기" 현재 새탭에서 열려서 문제')
+            # try:
+            #     element = findMoreProductButtonInPriceComparisonSite(driver)
+            #     isInMorePriceComarisonSite = True
+            #     tryFinding = tryFinding + 1
+            # except:
+            #     pass
     return find, None, None
 
 def findMoreProductButtonInPriceComparisonSite(driver):

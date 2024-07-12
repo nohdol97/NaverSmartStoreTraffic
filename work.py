@@ -7,10 +7,6 @@ import threading
 
 # ip 하나로 작업할 모든 상품 조회 하고, main 에서 ip 변경하고 작업
 def mobileNaverShopping(driver, mid_value, keyword):
-    # driver 에 해당 ip 접근 불가 있으면 return False
-    if allElements.findError(driver):
-        return False
-
     # 아래까지 스크롤 하면서 찾기
     find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, True)
 
@@ -22,10 +18,6 @@ def mobileNaverShopping(driver, mid_value, keyword):
     return True
 
 def mobilePriceComparisonNaverShopping(driver, mid_value, price_comparison_mid, keyword):
-    # driver 에 해당 ip 접근 불가 있으면 return False
-    if allElements.findError(driver):
-        return False
-
     # 아래까지 스크롤 하면서 찾기
     find, page, ranking = findUtil.findTargetByMidValue(driver, price_comparison_mid, keyword, False, True)
     if not find:

@@ -37,11 +37,11 @@ def decreaseNum(mid_value):
                     file.write(updated_line + '\n')
     except:
         time.sleep(3)
-        decreaseNum()
+        decreaseNum(mid_value)
 
 def checkProductNum(midValueKeywordStr):
     parts = midValueKeywordStr.split(',')
-    if parts[-1] == '0':
+    if parts[-1] == '0' or parts[-1] == '-1':
         return False
     return True
 
@@ -60,4 +60,30 @@ def checkFinish(startTime):
         return True 
     except:
         time.sleep(3)
-        checkFinish()
+        checkFinish(startTime)
+
+
+def errorProduct(mid_value):
+    try:
+        with open('product_list.txt', 'r', encoding='utf-8') as file:
+            lines = [line.strip() for line in file if line.strip()]  # 빈 줄을 무시
+
+        updated_lines = []
+        isUpdated = False
+
+        for line in lines:
+            parts = line.split(',')
+            if parts[0] == mid_value:
+                # 유입수를 -1로 만듦
+                parts[-1] = "-1"
+                isUpdated = True
+            updated_lines.append(','.join(parts))
+
+        if isUpdated:
+            # 파일에 다시 쓰기
+            with open('product_list.txt', 'w', encoding='utf-8') as file:
+                for updated_line in updated_lines:
+                    file.write(updated_line + '\n')
+    except:
+        time.sleep(3)
+        errorProduct(mid_value)

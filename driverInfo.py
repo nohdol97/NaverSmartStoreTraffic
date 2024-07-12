@@ -4,6 +4,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from seleniumwire import webdriver
 import os, time, shutil, psutil
 import chromeOptions
+import hiPaiProxy
 
 def create_driver(profileNum):
     for i in range(10):
@@ -43,11 +44,23 @@ def create_driver(profileNum):
             time.sleep(3)
             pass
 
-def kill_driver(driver):
+def make_driver(profileNum):
+    for i in range(10):
+        try:
+            driver, temp_profile_dir, proxy = create_driver(profileNum)
+            return driver, temp_profile_dir, proxy
+        except Exception as e:
+            hiPaiProxy.addProxyIp(proxy)
+            print(f"Error: {e}")
+            time.sleep(3)
+
+def kill_driver(driver, proxy):
     try:
         if driver.service.process:  # 프로세스가 존재하는지 확인
             driver.quit()
             time.sleep(2)  # 프로세스가 종료될 시간을 충분히 줌
+            if proxy:
+                hiPaiProxy.addProxyIp(proxy)
     except Exception as e:
         print(f"Error while quitting the driver: {e}")
         try:
@@ -55,6 +68,9 @@ def kill_driver(driver):
             for proc in process.children(recursive=True):
                 proc.kill()
             process.kill()
+            time.sleep(2)
+            if proxy:
+                hiPaiProxy.addProxyIp(proxy)
             print("Driver process killed successfully.")
         except Exception as e:
             print(f"Error while killing the driver process: {e}")

@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from seleniumwire import webdriver
-import os, random, shutil
+import os, random, shutil, time
 
 import chromeOptions
 import util.findUtil as findUtil
@@ -37,7 +37,7 @@ def create_cache(cache_number):
     with open('cacheUrls.txt', 'r', encoding='utf-8') as file:
         urls = [line.strip() for line in file if line.strip()]  # 빈 줄을 무시
     random.shuffle(urls)
-    num_urls = random.randint(7, 15) # 랜덤한 개수 선택
+    num_urls = random.randint(3, 7) # 랜덤한 개수 선택
     selected_urls = random.sample(urls, num_urls)  # 랜덤한 URL들을 선택
     driver.set_page_load_timeout(timeValues.getWaitLoadingTimeForCache())  # 페이지 로딩 타임아웃 설정 (초)
     for url in selected_urls:
@@ -47,7 +47,6 @@ def create_cache(cache_number):
             pass
     driver.set_page_load_timeout(60)  # 페이지 로딩 타임아웃 설정 (초)
     for midValueKeywordStr in productList.getMidValueKeywordList():
-        loginUtil.naverHome(driver)
         product = midValueKeywordStr.split(',')
         if (len(product) == 4):
             mid_value, comparison_mid_value, keyword = product[0], product[1], product[2]
@@ -59,6 +58,7 @@ def create_cache(cache_number):
             find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
             if cache_number == 1: # 포스트로 서버에 정보 보내줌
                 print(f"mid_value({mid_value}),page({page}),ranking({ranking})")
-
+        if not find:
+            productList.errorProduct(mid_value)
     # 드라이버 종료
-    driverInfo.kill_driver(driver)
+    driverInfo.kill_driver(driver, None)
