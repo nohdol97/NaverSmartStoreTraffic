@@ -24,8 +24,8 @@ def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite, isCl
                 try:
                     ranking = ranking + countUtil.getFindCountByMidValue(driver, mid_value)
                 except:
-                    return page, ranking
-                return page, ranking
+                    return find, page, ranking
+                return find, page, ranking
             else:
                 ranking = ranking + countUtil.getCountAll(driver)
             if not isPriceComparisonSite:
@@ -51,6 +51,7 @@ def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite, isCl
                 #     tryFinding = tryFinding + 1
                 # except:
                 #     pass
+    return find, None, None
 
 def tryFindAgain(driver, keyword):
     loginUtil.naverHome(driver)

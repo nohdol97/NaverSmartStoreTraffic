@@ -52,11 +52,11 @@ def create_cache(cache_number):
         if (len(product) == 4):
             mid_value, comparison_mid_value, keyword = product[0], product[1], product[2]
             accessShoppingUtil.access_random(driver, keyword)
-            page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
+            find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
         else:
             mid_value, keyword = product[0], product[1]
             accessShoppingUtil.access_random(driver, keyword)
-            page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
+            find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
             if cache_number == 1: # 포스트로 서버에 정보 보내줌
                 print(f"mid_value({mid_value}),page({page}),ranking({ranking})")
 

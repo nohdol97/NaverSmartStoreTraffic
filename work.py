@@ -12,11 +12,13 @@ def mobileNaverShopping(driver, mid_value, keyword):
         return False
 
     # 아래까지 스크롤 하면서 찾기
-    page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, True)
+    find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, True)
+
+    if not find:
+        return False
 
     # 찾은 상세페이지 체류
     stay_successful = stay_target_with_timeout(driver, timeout=30)
-
     return True
 
 def mobilePriceComparisonNaverShopping(driver, mid_value, price_comparison_mid, keyword):
@@ -25,14 +27,18 @@ def mobilePriceComparisonNaverShopping(driver, mid_value, price_comparison_mid, 
         return False
 
     # 아래까지 스크롤 하면서 찾기
-    page, ranking = findUtil.findTargetByMidValue(driver, price_comparison_mid, keyword, False, True)
+    find, page, ranking = findUtil.findTargetByMidValue(driver, price_comparison_mid, keyword, False, True)
+    if not find:
+        return False
 
     # 가격 비교 사이트 내에서 아래까지 스크롤 하면서 찾기
-    page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, True, True)
+    find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, True, True)
 
+    if not find:
+        return False
+    
     # 찾은 상세페이지 체류
     stay_successful = stay_target_with_timeout(driver, timeout=35)
-
     return True
 
 
