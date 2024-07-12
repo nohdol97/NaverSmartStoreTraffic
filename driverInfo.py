@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from seleniumwire import webdriver
-import os, time, shutil
+import os, time, shutil, psutil
 import chromeOptions
 
 def create_driver(profileNum):
@@ -42,3 +42,19 @@ def create_driver(profileNum):
             print(f"Error Creating driverInfo file: {e}")
             time.sleep(3)
             pass
+
+def kill_driver(driver):
+    try:
+        if driver.service.process:  # 프로세스가 존재하는지 확인
+            driver.quit()
+            time.sleep(2)  # 프로세스가 종료될 시간을 충분히 줌
+    except Exception as e:
+        print(f"Error while quitting the driver: {e}")
+        try:
+            process = psutil.Process(driver.service.process.pid)
+            for proc in process.children(recursive=True):
+                proc.kill()
+            process.kill()
+            print("Driver process killed successfully.")
+        except Exception as e:
+            print(f"Error while killing the driver process: {e}")

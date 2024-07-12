@@ -46,8 +46,7 @@ def start(profileNum, startTime):
                     else:
                         # 실패했으면 제거한 proxy를 파일의 마지막에 다시 추가
                         hiPaiProxy.addProxyIp(proxy)
-                        if driver.session_id:
-                            driver.quit()
+                        driverInfo.kill_driver(driver)
                         time.sleep(timeValues.getWaitLoadingTime())
                         driver, temp_profile_dir, proxy = driverInfo.create_driver(profileNum)
 
@@ -56,10 +55,10 @@ def start(profileNum, startTime):
             except Exception as e:
                 print(f"Error: {e}")
                 # traceback.print_exc()
+                driverInfo.kill_driver(driver)
             time.sleep(timeValues.getWaitLoadingTime())
         
-        if driver.session_id:
-            driver.quit()
+        driverInfo.kill_driver(driver)
 
         # 끝났으면 사용한 proxy를 파일의 마지막에 다시 추가
         hiPaiProxy.addProxyIp(proxy)

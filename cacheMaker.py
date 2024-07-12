@@ -8,7 +8,7 @@ import chromeOptions
 import util.findUtil as findUtil
 import util.loginUtil as loginUtil
 import util.accessShoppingUtil as accessShoppingUtil
-import productList, timeValues
+import productList, timeValues, driverInfo
 
 def create_cache(cache_number):
     profile_dir = os.path.join(os.getcwd(), f"chrome_profile{cache_number}")
@@ -61,5 +61,4 @@ def create_cache(cache_number):
                 print(f"mid_value({mid_value}),page({page}),ranking({ranking})")
 
     # 드라이버 종료
-    if driver.session_id:
-        driver.quit()
+    driverInfo.kill_driver(driver)
