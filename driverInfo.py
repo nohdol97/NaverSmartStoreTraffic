@@ -33,9 +33,12 @@ def create_driver(profileNum):
             service = Service(ChromeDriverManager().install())
 
             # seleniumwire 옵션 설정
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            cert_path = os.path.join(current_dir, 'selenium_ssl', 'ca.crt')
+            key_path = os.path.join(current_dir, 'selenium_ssl', 'ca.key')
             seleniumwire_options = {
-                'ca_cert': './selenium_ssl/ca.crt',
-                'ca_key': './selenium_ssl/ca.key'
+                'ca_cert': cert_path,
+                'ca_key': key_path
             }
 
             # WebDriver 인스턴스 생성    
