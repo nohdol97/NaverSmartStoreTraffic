@@ -1,7 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from seleniumwire import webdriver
 import os, random, shutil, time
 
 import chromeOptions
