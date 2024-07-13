@@ -5,3 +5,5 @@ __pycache__/
 hiPaiIp.txt
 product_list.txt
 cache[0-9]*/
+build/
+dist/

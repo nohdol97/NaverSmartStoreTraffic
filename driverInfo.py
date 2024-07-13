@@ -1,11 +1,10 @@
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from seleniumwire import webdriver
+from seleniumwire import webdriver  # seleniumwire로 변경
 import os, time, shutil, psutil
 import chromeOptions
 import hiPaiProxy
 import cacheMaker
-
 
 def create_driver(profileNum):
     for i in range(10):
@@ -33,8 +32,14 @@ def create_driver(profileNum):
             # ChromeDriver를 webdriver_manager를 사용하여 자동으로 설치 및 설정
             service = Service(ChromeDriverManager().install())
 
+            # seleniumwire 옵션 설정
+            seleniumwire_options = {
+                'ca_cert': './selenium_ssl/ca.crt',
+                'ca_key': './selenium_ssl/ca.key'
+            }
+
             # WebDriver 인스턴스 생성    
-            driver = webdriver.Chrome(service=service, options=chrome_options)
+            driver = webdriver.Chrome(service=service, options=chrome_options, seleniumwire_options=seleniumwire_options)
 
             # Chrome 최적화
             # chromeOptions.intercept(driver)
