@@ -4,6 +4,8 @@ from seleniumwire import webdriver
 import os, time, shutil, psutil
 import chromeOptions
 import hiPaiProxy
+import cacheMaker
+
 
 def create_driver(profileNum):
     for i in range(10):
@@ -50,6 +52,8 @@ def make_driver(profileNum):
             return driver, temp_profile_dir, proxy
         except Exception as e:
             hiPaiProxy.addProxyIp(proxy)
+            kill_driver(driver)
+            cacheMaker.create_cache(profileNum)
             print(f"Error: {e}")
             time.sleep(3)
 
