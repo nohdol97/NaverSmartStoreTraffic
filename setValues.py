@@ -7,4 +7,4 @@ maxFind = 3
 
 # 요청할 상품 수
 request_amount = 2000
-unit = 500
+unit = 2000
