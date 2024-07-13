@@ -23,10 +23,16 @@ def access_random(driver, keyword):
             access_by_totalSearch_shopping(driver, keyword)
         else: # 40퍼 확률
             access_by_totalSearch_more_shopping(driver, keyword)
+        # if allElements.findError(driver):
+        #     return False
+        # return True
     except:
         url = "https://m.naver.com/"
         driver.get(url)
         access_by_totalSearch_shopping(driver, keyword)
+        # if allElements.findError(driver):
+        #     return False
+        # return True
 
 def access_by_shoppingPan(driver, keyword):
     # 쇼핑판 클릭

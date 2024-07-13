@@ -44,6 +44,7 @@ def create_cache(cache_number):
             driver.get(url)
         except:
             pass
+
     driver.set_page_load_timeout(60)  # 페이지 로딩 타임아웃 설정 (초)
     for midValueKeywordStr in productList.getMidValueKeywordList():
         product = midValueKeywordStr.split(',')
@@ -57,5 +58,6 @@ def create_cache(cache_number):
             find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
         # if not find:
         #     productList.errorProduct(mid_value)
+
     # 드라이버 종료
     driverInfo.kill_driver(driver, None)

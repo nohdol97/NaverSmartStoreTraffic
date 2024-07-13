@@ -28,7 +28,6 @@ if __name__ == "__main__":
         # makeCache(0, startNum)
         # time.sleep(10)
         # makeCache(startNum, setValues.threadNum)
-        makeCache(0, setValues.threadNum)
         startTime = datetime.now()
         main(startTime)
         now = datetime.now()
@@ -41,3 +40,4 @@ if __name__ == "__main__":
             time.sleep(300)
         requestData.get_product()
         requestData.get_ip()
+        makeCache(0, setValues.threadNum)
