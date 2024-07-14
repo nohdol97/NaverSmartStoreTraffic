@@ -36,7 +36,7 @@ def create_cache(cache_number):
     with open('cacheUrls.txt', 'r', encoding='utf-8') as file:
         urls = [line.strip() for line in file if line.strip()]  # 빈 줄을 무시
     random.shuffle(urls)
-    num_urls = random.randint(3, 7) # 랜덤한 개수 선택
+    num_urls = random.randint(7, 15) # 랜덤한 개수 선택
     selected_urls = random.sample(urls, num_urls)  # 랜덤한 URL들을 선택
     driver.set_page_load_timeout(timeValues.getWaitLoadingTimeForCache())  # 페이지 로딩 타임아웃 설정 (초)
     for url in selected_urls:
@@ -45,16 +45,17 @@ def create_cache(cache_number):
         except:
             pass
 
+    # 네이버 상품용 캐시
     driver.set_page_load_timeout(60)  # 페이지 로딩 타임아웃 설정 (초)
     for midValueKeywordStr in productList.getMidValueKeywordList():
         product = midValueKeywordStr.split(',')
         if (len(product) == 4):
             mid_value, comparison_mid_value, keyword = product[0], product[1], product[2]
-            accessShoppingUtil.access_random(driver, keyword)
+            access = accessShoppingUtil.access_random(driver, keyword)
             find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
         else:
             mid_value, keyword = product[0], product[1]
-            accessShoppingUtil.access_random(driver, keyword)
+            access = accessShoppingUtil.access_random(driver, keyword)
             find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
         # if not find:
         #     productList.errorProduct(mid_value)

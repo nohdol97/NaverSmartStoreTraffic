@@ -12,6 +12,9 @@ def mobileNaverShopping(driver, mid_value, keyword):
 
     if not find:
         return False
+    
+    if allElements.findErrorForDetailProduct(driver):
+        return False
 
     # 찾은 상세페이지 체류
     stay_successful = stay_target_with_timeout(driver, timeout=30)

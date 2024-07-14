@@ -26,7 +26,8 @@ def start(profileNum, startTime):
                     mid_value, comparison_mid_value, keyword = product[0], product[1], product[2]
                     # 로그인 필요하면 여기에 추가
                     # loginUtil.login_with_account(driver, id, pw)
-                    access = accessShoppingUtil.access_direct(driver, keyword)
+                    access = accessShoppingUtil.access_direct(driver, keyword) # 캐시로 상품 클릭전까지 접근했을 경우
+                    # access = accessShoppingUtil.access_random(driver, keyword) # 위, 아래 랜덤으로 선택하게 할까
                     if access:
                         result = work.mobilePriceComparisonNaverShopping(driver, mid_value, comparison_mid_value, keyword)
                         if result:
@@ -37,7 +38,8 @@ def start(profileNum, startTime):
                     mid_value, keyword = product[0], product[1]
                     # 로그인 필요하면 여기에 추가
                     # loginUtil.login_with_account(driver, id, pw)
-                    access = accessShoppingUtil.access_direct(driver, keyword)
+                    access = accessShoppingUtil.access_direct(driver, keyword) # 캐시로 상품 클릭전까지 접근했을 경우
+                    # access = accessShoppingUtil.access_random(driver, keyword)
                     if access:
                         # 내부에서 tryFinding 으로 maxFind번 시도중
                         result = work.mobileNaverShopping(driver, mid_value, keyword)

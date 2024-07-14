@@ -26,6 +26,9 @@ def access_random(driver, keyword):
         # if allElements.findError(driver):
         #     return False
         # return True
+        if allElements.findError(driver):
+            return False
+        return True
     except:
         url = "https://m.naver.com/"
         driver.get(url)
@@ -33,6 +36,9 @@ def access_random(driver, keyword):
         # if allElements.findError(driver):
         #     return False
         # return True
+        if allElements.findError(driver):
+            return False
+        return True
 
 def access_by_shoppingPan(driver, keyword):
     # 쇼핑판 클릭

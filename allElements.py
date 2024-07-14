@@ -54,20 +54,33 @@ def getImageProduct(driver): # 이미지 "상품 바로가기" 버튼
     return driver.find_element(By.XPATH, '/html/body/div[4]/div/div/div[1]/div[3]/div[1]/div/div[2]/div/div/a[1]')
 
 def findError(driver):
-    # error_element = driver.find_element(By.XPATH, '//*[@id="main-message"]/h1/span')
-    error_element = None # '사이트를 연결할 수 없습니다' 위에 부분인데 추가해야되나
-    # /html/body 요소를 찾음
-    element = driver.find_element(By.XPATH, '/html/body')
-    
-    # body_element 안에 <div class="content_error"> 요소가 있는지 확인
-    naver_error_element = element.find_elements(By.CLASS_NAME, 'content_error')
+    try:
+        # error_element = driver.find_element(By.XPATH, '//*[@id="main-message"]/h1/span')
+        error_element = None # '사이트를 연결할 수 없습니다' 위에 부분인데 추가해야되나
+        # /html/body 요소를 찾음
+        element = driver.find_element(By.XPATH, '/html/body')
+        
+        # body_element 안에 <div class="content_error"> 요소가 있는지 확인
+        naver_error_element = element.find_elements(By.CLASS_NAME, 'content_error')
 
-    # content_error_divs 목록이 비어있지 않으면 True 반환
-    if naver_error_element or error_element:
-        return True
-    else:
+        # content_error_divs 목록이 비어있지 않으면 True 반환
+        if naver_error_element or error_element:
+            return True
+        else:
+            return False
+    except:
         return False
-    
+
+def findErrorForDetailProduct(driver):
+    try:
+        element = driver.find_element(By.CLASS_NAME, 'module_error') # 상품 들어갔을 때 '현재 서비스 접속이 불가합니다.'
+        if element:
+            return True
+        else:
+            return False
+    except:
+        return False
+
 def getAllProduct(driver, i): # 네이버 모바일 쇼핑 내에서 모든 상품들 갯수 파악 위함
     return driver.find_elements(By.XPATH, f'//*[@id="__next"]/div/div[2]/div[{i}]/div/div[starts-with(@id, "_sr_lst")]')
 
