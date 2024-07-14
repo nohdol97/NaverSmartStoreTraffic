@@ -9,14 +9,50 @@ def getShoppingPan(driver): # 네이버 모바일에서 검색창 아래 쇼핑�
 def getQuery(driver): # 네이버 모바일에서 검색창
     return driver.find_element(By.XPATH, '//*[@id="query"]')
 
-def getShopping(driver): # 네이버 모바일 통합검색에서 검색창 아래 쇼핑 탭
-    return driver.find_element(By.XPATH, '//*[@id="_sch_tab"]/div//a[contains(text(), "쇼핑")]')
-
 def getSearchFake(driver): # 네이버 모바일에서 통합검색 위치
     return driver.find_element(By.XPATH, '//*[@id="MM_SEARCH_FAKE"]')
 
+##### 쇼검 테스트 중...
+def getShopping(driver): # 네이버 모바일 통합검색에서 검색창 아래 쇼핑 탭 (쇼핑투데이로 이동)
+    return driver.find_element(By.XPATH, '//*[@id="_sch_tab"]/div//a[contains(text(), "쇼핑")]')
+
 def getMoreShopping(driver): # 네이버 모바일 통합검색에서 '쇼핑 더보기' 버튼 (없을 수도 있음)
     return driver.find_element(By.XPATH, '//*[@id="ct"]//span[@class="kwd" and contains(text(), "쇼핑")]')
+
+def getNaverHomeMoreTab(driver): # 네이버 모바일 홈에서 탭 더보기 (여기 내부에 있는 '네이버 쇼핑' 들어가야 함)
+    return driver.find_element(By.XPATH, '//*[@id="HOME_SHORTCUT"]//a[contains(@href, "\\services.html")]')
+
+def getEnterToNaverShoppingByHomeMoreTab(driver): # https://m.naver.com/services.html
+    return driver.find_element(By.XPATH, '//*[@id="wrap"]//em[contains(text(), "네이버쇼핑")]')
+
+def getLayerBottomSheet(driver):
+    try:
+        return driver.find_element(By.XPATH, '//*[@id="__next"]//button[contains(text(), "하루 동안 보지 않기")]')
+    except:
+        try:
+            return driver.find_element(By.XPATH, '//*[@id="__next"]//span[contains(text(), "레이어 닫기")]')
+        except:
+            pass
+    return None
+
+def getSearchInShopping(driver): # 네이버 쇼핑 에서 검색창
+    return driver.find_element(By.XPATH, '//*[@id="gnb-gnb"]//span[contains(text(), "상품명")]')
+
+def getSearchInShoppingWeb(driver): # 네이버 쇼핑 웹 에서 검색창
+    return driver.find_element(By.XPATH, '//*[@id="__next"]//input[@title="검색어 입력"]')
+
+def getShoppingTabInShoppingPan(driver): # 네이버 모바일 쇼핑 탭으로 쇼핑투데이 진입 후 쇼핑 탭 이동
+    return driver.find_element(By.XPATH, '//*[@id="NAV_LIST"]//*[@data-code="SHOP_VOGUE"]')
+
+def getShoppingBestInShopping(driver): # 쇼핑 탭에서 best 탭
+    return driver.find_element(By.XPATH, '//*[@id="mflick"]//a[@href="https://msearch.shopping.naver.com/best/home"]')
+
+def getSearchInShoppingBest(driver):
+    return driver.find_element(By.XPATH, "//button[.//span[contains(@class, 'blind') and normalize-space(text())='검색']]")
+
+def getQueryInShopping(driver): # 네이버 쇼핑이랑 Best 등 곳에서 검색창
+    return driver.find_element(By.XPATH, '//*[@id="input_text"]')
+#####
 
 def getNextButton(driver, i): # 네이버 모바일 쇼핑 내에서 다음 페이지 버튼
     return driver.find_element(By.XPATH, f'//*[@id="__next"]/div/div[2]/div[{i}]/div/button[2]')
@@ -83,9 +119,6 @@ def findErrorForDetailProduct(driver):
 
 def getAllProduct(driver, i): # 네이버 모바일 쇼핑 내에서 모든 상품들 갯수 파악 위함
     return driver.find_elements(By.XPATH, f'//*[@id="__next"]/div/div[2]/div[{i}]/div/div[starts-with(@id, "_sr_lst")]')
-
-def getSearchInShopping(driver):
-    return driver.find_element(By.XPATH, '//*[@id="gnb-gnb"]/div/div/div[1]/span')
 
 def getSearchIconInShopping(driver):
     return driver.find_element(By.XPATH, '//*[@id="gnb-gnb"]/div/div[1]/div[3]/button/svg')

@@ -21,7 +21,7 @@ def save_proxy_ips(proxy_ips):
             file.write(ip + '\n')
 
 def get_product():
-    params = {'amount': setValues.request_amount, 'unit': setValues.unit}
+    params = {'amount': setValues.targetCount, 'unit': setValues.unit}
     response = requests.get(f'{BASE_URL}/get_product', params=params)
     if response.status_code == 200:
         product_data = response.json().get('data', [])

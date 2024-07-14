@@ -1,13 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-import os, random, shutil, time
+import os, random, shutil, multiprocessing
 
 import chromeOptions
 import util.findUtil as findUtil
 import util.loginUtil as loginUtil
 import util.accessShoppingUtil as accessShoppingUtil
 import productList, timeValues, driverInfo
+import setValues
 
 def create_cache(cache_number):
     profile_dir = os.path.join(os.getcwd(), f"chrome_profile{cache_number}")
@@ -21,6 +22,7 @@ def create_cache(cache_number):
 
     # Chrome option 설정
     chrome_options = webdriver.ChromeOptions()
+    # chromeOptions.addMobile(chrome_options) 절대 하면 안됨
     chromeOptions.addOptimization(chrome_options, profile_dir)
 
     # Xvfb 설정
@@ -42,8 +44,9 @@ def create_cache(cache_number):
     for url in selected_urls:
         try:
             driver.get(url)
-        except:
-            pass
+            driver.execute_script("window.stop();")  # 페이지 로딩 중단
+        except Exception as e:
+            print(f"Error loading {url}: {e}")
 
     # 네이버 상품용 캐시
     driver.set_page_load_timeout(60)  # 페이지 로딩 타임아웃 설정 (초)
@@ -51,12 +54,32 @@ def create_cache(cache_number):
         product = midValueKeywordStr.split(',')
         if (len(product) == 4):
             mid_value, comparison_mid_value, keyword = product[0], product[1], product[2]
-            access = accessShoppingUtil.access_random(driver, keyword)
-            find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
+            if setValues.searchOption == "통검":
+                access = accessShoppingUtil.access_total_random(driver, keyword)
+                find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
+            elif setValues.searchOption == "쇼검":
+                # access = accessShoppingUtil.access_by_shopping(driver, keyword)
+                access = accessShoppingUtil.access_total_random(driver, keyword)
+                find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
+            elif setValues.searchOption == "통검&쇼검":
+                access = accessShoppingUtil.access_total_random(driver, keyword)
+                find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
+                # access = accessShoppingUtil.access_by_shopping(driver, keyword)
+                # find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
         else:
             mid_value, keyword = product[0], product[1]
-            access = accessShoppingUtil.access_random(driver, keyword)
-            find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
+            if setValues.searchOption == "통검":
+                access = accessShoppingUtil.access_total_random(driver, keyword)
+                find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
+            elif setValues.searchOption == "쇼검":
+                # access = accessShoppingUtil.access_by_shopping(driver, keyword)
+                access = accessShoppingUtil.access_total_random(driver, keyword)
+                find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
+            elif setValues.searchOption == "통검&쇼검":
+                access = accessShoppingUtil.access_total_random(driver, keyword)
+                find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
+                # access = accessShoppingUtil.access_by_shopping(driver, keyword)
+                # find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
         # if not find:
         #     productList.errorProduct(mid_value)
 

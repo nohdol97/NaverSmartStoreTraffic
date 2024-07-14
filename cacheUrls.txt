@@ -22,12 +22,10 @@ https://m.fmkorea.com/
 https://m.melon.com/
 https://m.vlive.tv/
 https://m.cafe.daum.net/
-https://m.mega.nate.com/
 https://m.inven.co.kr/
 https://m.clien.net/
 https://m.ruliweb.com/
 https://m.twitch.tv/
-https://m.chosun.com/
 https://m.joins.com/
 https://m.donga.com/
 https://m.hani.co.kr/
@@ -36,13 +34,9 @@ https://m.pann.nate.com/
 https://m.ilbe.com/
 https://m.humoruniv.com/
 https://m.theqoo.net/
-https://m.mlbdraftk.com/
-https://m.kbs.co.kr/
 https://m.sbs.co.kr/
-https://m.mbc.co.kr/
 https://m.ebs.co.kr/
 https://m.cjenm.com/
 https://m.lotteworld.com/
-https://m.cyworld.com/
 https://m.hangame.com/
 https://m.oliveyoung.co.kr/

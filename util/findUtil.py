@@ -16,7 +16,7 @@ def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite, isCl
     count = 1
     tryFinding = 0
     isInMorePriceComarisonSite = False
-    while not find and tryFinding < setValues.maxFind:
+    while not find and tryFinding < setValues.maxAttempts:
         find = findByMidValue(driver, mid_value, isPriceComparisonSite, isInMorePriceComarisonSite, isClick)
         if find:
             time.sleep(3)
@@ -31,7 +31,7 @@ def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite, isCl
         if not isPriceComparisonSite:
             for i in range(1, 11):
                 try:
-                    if count == setValues.maxPage:
+                    if count == setValues.maxPages:
                         accessShoppingUtil.access_direct(driver, keyword)
                         ranking = 0
                         count = 1

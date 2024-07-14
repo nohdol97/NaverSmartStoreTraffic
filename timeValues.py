@@ -4,7 +4,7 @@ def getWaitStartThreadTime():
     return random.uniform(5, 10)
 
 def getWaitLoadingTime():
-    return random.uniform(2, 4)
+    return random.uniform(2, 3)
 
 def getWaitScrollTime():
     return random.uniform(1, 2)

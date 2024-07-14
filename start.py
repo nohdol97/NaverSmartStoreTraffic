@@ -8,27 +8,33 @@ import cacheMaker
 import requestData
 import setValues
 
-def makeCache(startNum, endNum):
-    with ThreadPoolExecutor(max_workers=endNum-startNum) as executor:
+def makeCache():
+    with ThreadPoolExecutor(max_workers=setValues.windowCount) as executor:
         futures = []
-        for i in range(startNum, endNum):
+        for i in range(0, setValues.windowCount):
             futures.append(executor.submit(cacheMaker.create_cache, i))
             time.sleep(timeValues.getWaitStartThreadTime()) # 시간 간격으로 스레드 실행
 
 def main(startTime):
-    with ThreadPoolExecutor(max_workers=setValues.threadNum) as executor:
+    with ThreadPoolExecutor(max_workers=setValues.windowCount) as executor:
         futures = []
-        for i in range(0, setValues.threadNum):
+        for i in range(0, setValues.windowCount):
             futures.append(executor.submit(task.start, i, startTime))
             time.sleep(timeValues.getWaitStartThreadTime()) # 시간 간격으로 스레드 실행
 
-if __name__ == "__main__":
+def work(windowCount, maxPages, maxAttempts, targetCount, unit, searchOption):
+    # 전달된 인자 처리
+    setValues.windowCount = windowCount
+    setValues.maxPages = maxPages
+    setValues.maxAttempts = maxAttempts
+    setValues.targetCount = targetCount
+    setValues.unit = unit
+    setValues.searchOption = searchOption
+
     while True:
-        # startNum = setValues.threadNum // 2
-        # makeCache(0, startNum)
-        # time.sleep(10)
-        # makeCache(startNum, setValues.threadNum)
-        makeCache(0, setValues.threadNum)
+        requestData.get_product()
+        requestData.get_ip()
+        makeCache()
         startTime = datetime.now()
         main(startTime)
         now = datetime.now()
@@ -39,5 +45,3 @@ if __name__ == "__main__":
             time.sleep(wait_time)
         else:
             time.sleep(300)
-        requestData.get_product()
-        requestData.get_ip()
