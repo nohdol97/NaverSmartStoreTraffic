@@ -62,7 +62,6 @@ def checkFinish(startTime):
         time.sleep(3)
         checkFinish(startTime)
 
-
 def errorProduct(mid_value):
     try:
         with open('product_list.txt', 'r', encoding='utf-8') as file:

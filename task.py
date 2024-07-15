@@ -1,4 +1,5 @@
-import time, shutil
+import time
+import shutil
 import work
 import timeValues as timeValues
 import traceback
@@ -7,6 +8,48 @@ import driverInfo
 import util.loginUtil as loginUtil
 import util.accessShoppingUtil as accessShoppingUtil
 import hiPaiProxy
+
+def process_product(driver, proxy, mid_value, comparison_mid_value, keyword, is_comparison=False):
+    if is_comparison:
+        result = work.mobilePriceComparisonNaverShopping(driver, mid_value, comparison_mid_value, keyword)
+    else:
+        result = work.mobileNaverShopping(driver, mid_value, keyword)
+    
+    if result:
+        productList.decreaseNum(mid_value)
+        print_product_list()
+    else:
+        hiPaiProxy.addProxyIp(proxy)
+    
+    return result
+
+def print_product_list():
+    for i in range(10):
+        try:
+            with open('product_list.txt', 'r', encoding='utf-8') as file:
+                lines = file.readlines()
+            for line in lines:
+                print(line.strip())
+            print()  # 마지막에 엔터 하나 추가
+            break
+        except:
+            pass
+
+def handle_product(driver, proxy, product):
+    product_parts = product.split(',')
+    if len(product_parts) == 4:  # 원부 검색
+        mid_value, comparison_mid_value, keyword = product_parts[0], product_parts[1], product_parts[2]
+        # 로그인 필요하면 여기에 추가
+        # loginUtil.login_with_account(driver, id, pw)
+        access = accessShoppingUtil.access_direct(driver, keyword)
+        if access:
+            return process_product(driver, proxy, mid_value, comparison_mid_value, keyword, is_comparison=True)
+    else:
+        mid_value, keyword = product_parts[0], product_parts[1]
+        access = accessShoppingUtil.access_direct(driver, keyword)
+        if access:
+            return process_product(driver, proxy, mid_value, None, keyword, is_comparison=False)
+    return False
 
 def start(profileNum, startTime):
     while True:
@@ -19,38 +62,9 @@ def start(profileNum, startTime):
             try:
                 if not productList.checkProductNum(midValueKeywordStr):
                     continue
-
-                # 상품 찾기 시도
-                product = midValueKeywordStr.split(',')
-                if (len(product) == 4): # 원부 검색
-                    mid_value, comparison_mid_value, keyword = product[0], product[1], product[2]
-                    # 로그인 필요하면 여기에 추가
-                    # loginUtil.login_with_account(driver, id, pw)
-                    access = accessShoppingUtil.access_direct(driver, keyword) # 캐시로 상품 클릭전까지 접근했을 경우
-                    # access = accessShoppingUtil.access_random(driver, keyword) # 위, 아래 랜덤으로 선택하게 할까
-                    if access:
-                        result = work.mobilePriceComparisonNaverShopping(driver, mid_value, comparison_mid_value, keyword)
-                        if result:
-                            productList.decreaseNum(mid_value)
-                    else:
-                        break
-                else:
-                    mid_value, keyword = product[0], product[1]
-                    # 로그인 필요하면 여기에 추가
-                    # loginUtil.login_with_account(driver, id, pw)
-                    access = accessShoppingUtil.access_direct(driver, keyword) # 캐시로 상품 클릭전까지 접근했을 경우
-                    # access = accessShoppingUtil.access_random(driver, keyword)
-                    if access:
-                        # 내부에서 tryFinding 으로 maxFind번 시도중
-                        result = work.mobileNaverShopping(driver, mid_value, keyword)
-                        if result:
-                            productList.decreaseNum(mid_value)
-                        else:
-                            # 실패했으면 제거한 proxy를 파일의 마지막에 다시 추가
-                            hiPaiProxy.addProxyIp(proxy)
-                            # productList.errorProduct(mid_value)
-                    else:
-                        break
+                
+                if not handle_product(driver, proxy, midValueKeywordStr):
+                    break
             except Exception as e:
                 print(f"Error: {e}")
                 traceback.print_exc()

@@ -10,6 +10,9 @@ def mobileNaverShopping(driver, mid_value, keyword):
     # 아래까지 스크롤 하면서 찾기
     find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, True)
 
+    if allElements.findError(driver):
+        return False
+
     if not find:
         return False
     
@@ -23,6 +26,10 @@ def mobileNaverShopping(driver, mid_value, keyword):
 def mobilePriceComparisonNaverShopping(driver, mid_value, price_comparison_mid, keyword):
     # 아래까지 스크롤 하면서 찾기
     find, page, ranking = findUtil.findTargetByMidValue(driver, price_comparison_mid, keyword, False, True)
+
+    if allElements.findError(driver):
+        return False
+
     if not find:
         return False
 

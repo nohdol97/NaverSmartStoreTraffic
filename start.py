@@ -33,10 +33,14 @@ def work(windowCount, maxPages, maxAttempts, targetCount, unit, searchOption):
 
     while True:
         requestData.get_product()
+        time.sleep(3)
         requestData.get_ip()
-        makeCache()
+        time.sleep(3)
+        if check_product_list():
+            makeCache()
         startTime = datetime.now()
-        main(startTime)
+        if check_product_list():
+            main(startTime)
         now = datetime.now()
         print(f"finish time: {now}")
         next_day = startTime.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
@@ -45,3 +49,23 @@ def work(windowCount, maxPages, maxAttempts, targetCount, unit, searchOption):
             time.sleep(wait_time)
         else:
             time.sleep(300)
+        time.sleep(timeValues.getWakeWaitingTime())
+
+def check_product_list():
+    try:
+        with open('product_list.txt', 'r', encoding='utf-8') as file:
+            lines = [line.strip().replace(' ', '') for line in file if line.strip()]
+        
+        if not lines:
+            return False
+        
+        for line in lines:
+            parts = line.split(',')
+            if parts[-1] == '0':
+                return False
+        
+        print("작업을 시작합니다.")
+        return True
+    except:
+        print("product_list.txt 가 없습니다.")
+        return False

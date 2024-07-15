@@ -91,19 +91,10 @@ def getImageProduct(driver): # 이미지 "상품 바로가기" 버튼
 
 def findError(driver):
     try:
-        # error_element = driver.find_element(By.XPATH, '//*[@id="main-message"]/h1/span')
-        error_element = None # '사이트를 연결할 수 없습니다' 위에 부분인데 추가해야되나
-        # /html/body 요소를 찾음
-        element = driver.find_element(By.XPATH, '/html/body')
-        
-        # body_element 안에 <div class="content_error"> 요소가 있는지 확인
-        naver_error_element = element.find_elements(By.CLASS_NAME, 'content_error')
-
-        # content_error_divs 목록이 비어있지 않으면 True 반환
-        if naver_error_element or error_element:
+        page_source = driver.page_source
+        if "동시에 이용하는 이용자" in page_source or "사이트를 연결" in page_source or "쇼핑 서비스 접속" in page_source or "현재 서비스 접속" in page_source:
             return True
-        else:
-            return False
+        return False
     except:
         return False
 

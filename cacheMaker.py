@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-import os, random, shutil, multiprocessing
+import os, random, shutil, time
 
 import chromeOptions
 import util.findUtil as findUtil
@@ -41,12 +41,14 @@ def create_cache(cache_number):
     num_urls = random.randint(7, 15) # 랜덤한 개수 선택
     selected_urls = random.sample(urls, num_urls)  # 랜덤한 URL들을 선택
     driver.set_page_load_timeout(timeValues.getWaitLoadingTimeForCache())  # 페이지 로딩 타임아웃 설정 (초)
-    for url in selected_urls:
+    i = 0
+    while i < len(selected_urls):
         try:
-            driver.get(url)
-            driver.execute_script("window.stop();")  # 페이지 로딩 중단
+            driver.get(selected_urls[i])
+            time.sleep(5)
+            i += 1  # 성공 시 다음 URL로 이동
         except Exception as e:
-            print(f"Error loading {url}: {e}")
+            i += 2  # 실패 시 다음 다음 URL로 이동
 
     # 네이버 상품용 캐시
     driver.set_page_load_timeout(60)  # 페이지 로딩 타임아웃 설정 (초)
@@ -66,6 +68,8 @@ def create_cache(cache_number):
                 find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
                 # access = accessShoppingUtil.access_by_shopping(driver, keyword)
                 # find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
+            if not access:
+                break
         else:
             mid_value, keyword = product[0], product[1]
             if setValues.searchOption == "통검":
@@ -80,6 +84,8 @@ def create_cache(cache_number):
                 find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
                 # access = accessShoppingUtil.access_by_shopping(driver, keyword)
                 # find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
+            if not access:
+                break
         # if not find:
         #     productList.errorProduct(mid_value)
 
