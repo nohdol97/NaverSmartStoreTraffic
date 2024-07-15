@@ -59,11 +59,6 @@ def check_product_list():
         if not lines:
             return False
         
-        for line in lines:
-            parts = line.split(',')
-            if parts[-1] == '0':
-                return False
-        
         print("작업을 시작합니다.")
         return True
     except:
