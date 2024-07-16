@@ -30,64 +30,64 @@ def create_cache(cache_number):
 
     # ChromeDriver를 webdriver_manager를 사용하여 자동으로 설치 및 설정
     service = Service(ChromeDriverManager().install())
-
-    # WebDriver 인스턴스 생성    
-    driver = webdriver.Chrome(service=service, options=chrome_options)
-    
     # 랜덤한 개수의 랜덤한 URL 선택
     with open('cacheUrls.txt', 'r', encoding='utf-8') as file:
         urls = [line.strip() for line in file if line.strip()]  # 빈 줄을 무시
     random.shuffle(urls)
     num_urls = random.randint(7, 15) # 랜덤한 개수 선택
     selected_urls = random.sample(urls, num_urls)  # 랜덤한 URL들을 선택
-    driver.set_page_load_timeout(timeValues.getWaitLoadingTimeForCache())  # 페이지 로딩 타임아웃 설정 (초)
-    i = 0
-    while i < len(selected_urls):
+    for url in selected_urls:
         try:
-            driver.get(selected_urls[i])
-            time.sleep(5)
-            i += 1  # 성공 시 다음 URL로 이동
+            driver = webdriver.Chrome(service=service, options=chrome_options)
+            driver.set_page_load_timeout(timeValues.getWaitLoadingTimeForCache())  # 페이지 로딩 타임아웃 설정 (초)
+            driver.get(url)
+            time.sleep(2)
+            driverInfo.kill_driver(driver, None)
         except Exception as e:
-            i += 2  # 실패 시 다음 다음 URL로 이동
+            driverInfo.kill_driver(driver, None)
 
     # 네이버 상품용 캐시
-    driver.set_page_load_timeout(60)  # 페이지 로딩 타임아웃 설정 (초)
-    for midValueKeywordStr in productList.getMidValueKeywordList():
-        product = midValueKeywordStr.split(',')
-        if (len(product) == 4):
-            mid_value, comparison_mid_value, keyword = product[0], product[1], product[2]
-            if setValues.searchOption == "통검":
-                access = accessShoppingUtil.access_total_random(driver, keyword)
-                find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
-            elif setValues.searchOption == "쇼검":
-                # access = accessShoppingUtil.access_by_shopping(driver, keyword)
-                access = accessShoppingUtil.access_total_random(driver, keyword)
-                find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
-            elif setValues.searchOption == "통검&쇼검":
-                access = accessShoppingUtil.access_total_random(driver, keyword)
-                find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
-                # access = accessShoppingUtil.access_by_shopping(driver, keyword)
-                # find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
-            if not access:
-                break
-        else:
-            mid_value, keyword = product[0], product[1]
-            if setValues.searchOption == "통검":
-                access = accessShoppingUtil.access_total_random(driver, keyword)
-                find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
-            elif setValues.searchOption == "쇼검":
-                # access = accessShoppingUtil.access_by_shopping(driver, keyword)
-                access = accessShoppingUtil.access_total_random(driver, keyword)
-                find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
-            elif setValues.searchOption == "통검&쇼검":
-                access = accessShoppingUtil.access_total_random(driver, keyword)
-                find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
-                # access = accessShoppingUtil.access_by_shopping(driver, keyword)
-                # find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
-            if not access:
-                break
-        # if not find:
-        #     productList.errorProduct(mid_value)
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+    try:
+        driver.set_page_load_timeout(60)  # 페이지 로딩 타임아웃 설정 (초)
+        for midValueKeywordStr in productList.getMidValueKeywordList():
+            product = midValueKeywordStr.split(',')
+            if (len(product) == 4):
+                mid_value, comparison_mid_value, keyword = product[0], product[1], product[2]
+                if setValues.searchOption == "통검":
+                    access = accessShoppingUtil.access_total_random(driver, keyword)
+                    find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
+                elif setValues.searchOption == "쇼검":
+                    # access = accessShoppingUtil.access_by_shopping(driver, keyword)
+                    access = accessShoppingUtil.access_total_random(driver, keyword)
+                    find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
+                elif setValues.searchOption == "통검&쇼검":
+                    access = accessShoppingUtil.access_total_random(driver, keyword)
+                    find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
+                    # access = accessShoppingUtil.access_by_shopping(driver, keyword)
+                    # find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
+                if not access:
+                    break
+            else:
+                mid_value, keyword = product[0], product[1]
+                if setValues.searchOption == "통검":
+                    access = accessShoppingUtil.access_total_random(driver, keyword)
+                    find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
+                elif setValues.searchOption == "쇼검":
+                    # access = accessShoppingUtil.access_by_shopping(driver, keyword)
+                    access = accessShoppingUtil.access_total_random(driver, keyword)
+                    find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
+                elif setValues.searchOption == "통검&쇼검":
+                    access = accessShoppingUtil.access_total_random(driver, keyword)
+                    find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
+                    # access = accessShoppingUtil.access_by_shopping(driver, keyword)
+                    # find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)
+                if not access:
+                    break
+            # if not find:
+            #     productList.errorProduct(mid_value)
+    except:
+        pass
 
     # 드라이버 종료
     driverInfo.kill_driver(driver, None)

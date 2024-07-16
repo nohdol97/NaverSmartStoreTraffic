@@ -54,3 +54,9 @@ def scrollDetailPage(driver, scrollIntervalTime):
                 time.sleep(scrollIntervalTime)
         except:
             pass
+
+def scrollUp(driver):
+    driver.find_element(By.XPATH, "//body").send_keys(Keys.PAGE_UP)
+
+def scrollDown(driver):
+    driver.find_element(By.XPATH, "//body").send_keys(Keys.PAGE_DOWN)

@@ -1,4 +1,4 @@
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 import time
 from datetime import datetime, timedelta
 
@@ -8,32 +8,32 @@ import cacheMaker
 import requestData
 import setValues
 
-def makeCache():
-    with ThreadPoolExecutor(max_workers=setValues.windowCount) as executor:
+def make_cache():
+    with ProcessPoolExecutor(max_workers=setValues.windowCount) as executor:
         futures = []
-        for i in range(0, setValues.windowCount):
+        for i in range(setValues.windowCount):
             futures.append(executor.submit(cacheMaker.create_cache, i))
-            time.sleep(timeValues.getWaitStartThreadTime()) # 시간 간격으로 스레드 실행
+            time.sleep(timeValues.getWaitStartThreadTime())
 
 def main(startTime):
-    with ThreadPoolExecutor(max_workers=setValues.windowCount) as executor:
+    with ProcessPoolExecutor(max_workers=setValues.windowCount) as executor:
         futures = []
-        for i in range(0, setValues.windowCount):
+        for i in range(setValues.windowCount):
             futures.append(executor.submit(task.start, i, startTime))
-            time.sleep(timeValues.getWaitStartThreadTime()) # 시간 간격으로 스레드 실행
+            time.sleep(timeValues.getWaitStartThreadTime())
 
-def work(windowCount, maxPages, maxAttempts, targetCount, unit, searchOption):
-    # 전달된 인자 처리
+def work(windowCount, maxPages, maxAttempts, targetCount, unit, maxTime, searchOption):
     setValues.windowCount = windowCount
     setValues.maxPages = maxPages
     setValues.maxAttempts = maxAttempts
     setValues.targetCount = targetCount
     setValues.unit = unit
+    setValues.maxTime = maxTime
     setValues.searchOption = searchOption
 
     while True:
         if check_product_list():
-            makeCache()
+            make_cache()
         startTime = datetime.now()
         if check_product_list():
             main(startTime)
@@ -58,6 +58,10 @@ def check_product_list():
         
         if not lines:
             return False
+        
+        for line in lines:
+            if not line:  # 줄이 띄어쓰기만 있는 경우
+                return False
         
         print("작업을 시작합니다.")
         return True

@@ -92,6 +92,15 @@ def getImageProduct(driver): # 이미지 "상품 바로가기" 버튼
 def findError(driver):
     try:
         page_source = driver.page_source
+        if "동시에 이용하는 이용자" in page_source or "사이트를 연결" in page_source or "쇼핑 서비스 접속" in page_source or "현재 서비스 접속" in page_source or "사이트에 연결" in page_source:
+            return True
+        return False
+    except:
+        return False
+
+def findErrorForProduct(driver):
+    try:
+        page_source = driver.page_source
         if "동시에 이용하는 이용자" in page_source or "사이트를 연결" in page_source or "쇼핑 서비스 접속" in page_source or "현재 서비스 접속" in page_source:
             return True
         return False

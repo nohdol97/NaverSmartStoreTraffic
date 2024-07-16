@@ -57,8 +57,10 @@ def start(profileNum, startTime):
             break
         
         driver, temp_profile_dir, proxy = driverInfo.make_driver(profileNum)
-
+        driver.set_page_load_timeout(100)  # 페이지 로딩 타임아웃 설정 (초)
+        i = 0
         for midValueKeywordStr in productList.getMidValueKeywordList():
+            i += 1
             try:
                 if not productList.checkProductNum(midValueKeywordStr):
                     continue

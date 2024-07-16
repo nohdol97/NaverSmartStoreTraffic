@@ -21,7 +21,7 @@ class MyApp(QWidget):
         self.setWindowIcon(QIcon(icon_path))
 
         # 라벨 및 입력란 생성
-        labels = ["작동할 창 수", "찾는 페이지 최대", "찾기 시도 최대", "작업할 유입수", "유입수 단위"]
+        labels = ["작동할 창 수", "찾는 페이지 최대", "찾기 시도 최대", "작업할 유입수", "유입수 단위", "최대 체류 시간"]
         self.line_edits = {}
 
         main_layout = QVBoxLayout()
@@ -143,6 +143,7 @@ class MyApp(QWidget):
                 int(self.line_edits["찾기 시도 최대"].text()),
                 int(self.line_edits["작업할 유입수"].text()),
                 self.line_edits["유입수 단위"].text(),
+                int(self.line_edits["최대 체류 시간"].text()),
                 next(label.replace("&&", "&") for label, radio_button in self.radio_buttons.items() if radio_button.isChecked())
             ]
 

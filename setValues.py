@@ -11,3 +11,6 @@ unit = 2000
 
 # 검색 방법
 searchOption = "통검"
+
+# 최대 체류 시간
+maxTime = 60
