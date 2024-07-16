@@ -56,23 +56,26 @@ def start(profileNum, startTime):
         if productList.checkFinish(startTime):
             break
         
-        driver, temp_profile_dir, proxy = driverInfo.make_driver(profileNum)
-        driver.set_page_load_timeout(100)  # 페이지 로딩 타임아웃 설정 (초)
-        i = 0
-        for midValueKeywordStr in productList.getMidValueKeywordList():
-            i += 1
-            try:
-                if not productList.checkProductNum(midValueKeywordStr):
-                    continue
-                
-                if not handle_product(driver, proxy, midValueKeywordStr):
-                    break
-            except Exception as e:
-                print(f"Error: {e}")
-                traceback.print_exc()
-            time.sleep(timeValues.getWaitLoadingTime())
-        
-        driverInfo.kill_driver(driver, proxy)
+        try:
+            driver, temp_profile_dir, proxy = driverInfo.make_driver(profileNum)
+            driver.set_page_load_timeout(50)  # 페이지 로딩 타임아웃 설정 (초)
+            i = 0
+            for midValueKeywordStr in productList.getMidValueKeywordList():
+                i += 1
+                try:
+                    if not productList.checkProductNum(midValueKeywordStr):
+                        continue
+                    
+                    if not handle_product(driver, proxy, midValueKeywordStr):
+                        break
+                except Exception as e:
+                    print(f"Error: {e}")
+                    traceback.print_exc()
+                time.sleep(timeValues.getWaitLoadingTime())
+            
+            driverInfo.kill_driver(driver, proxy)
+        except:
+            driverInfo.kill_driver(driver, proxy)
 
         # 임시 프로필 디렉토리 삭제
         for i in range(10):
