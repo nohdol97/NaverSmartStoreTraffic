@@ -3,7 +3,7 @@ import util.scrollUtil as scrollUtil
 import timeValues as timeValues
 import setValues
 
-import time
+import time, random
 
 def stay_target(driver):
     try:
@@ -17,7 +17,7 @@ def stay_target(driver):
 
 def stay_more_time(driver):
     try:
-        for i in range(setValues.maxTime):
+        for i in range(random.randint(1, 30)):
             randomValue = randomUtil.get_random_value()
             if randomValue < 0.6:
                 scrollUtil.scrollUp(driver)

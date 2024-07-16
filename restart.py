@@ -1,4 +1,4 @@
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 import time
 from datetime import datetime, timedelta
 
@@ -9,31 +9,28 @@ import requestData
 import setValues
 
 def make_cache():
-    with ProcessPoolExecutor(max_workers=setValues.windowCount) as executor:
+    with ThreadPoolExecutor(max_workers=setValues.windowCount) as executor:
         futures = []
         for i in range(setValues.windowCount):
             futures.append(executor.submit(cacheMaker.create_cache, i))
             time.sleep(timeValues.getWaitStartThreadTime())
 
 def main(startTime):
-    with ProcessPoolExecutor(max_workers=setValues.windowCount) as executor:
+    with ThreadPoolExecutor(max_workers=setValues.windowCount) as executor:
         futures = []
         for i in range(setValues.windowCount):
             futures.append(executor.submit(task.start, i, startTime))
             time.sleep(timeValues.getWaitStartThreadTime())
 
-def work(windowCount, maxPages, maxAttempts, targetCount, unit, maxTime, searchOption):
+def work(windowCount, maxPages, maxAttempts, targetCount, unit, searchOption):
     setValues.windowCount = windowCount
     setValues.maxPages = maxPages
     setValues.maxAttempts = maxAttempts
     setValues.targetCount = targetCount
     setValues.unit = unit
-    setValues.maxTime = maxTime
     setValues.searchOption = searchOption
 
     while True:
-        if check_product_list():
-            make_cache()
         startTime = datetime.now()
         if check_product_list():
             main(startTime)
@@ -50,6 +47,8 @@ def work(windowCount, maxPages, maxAttempts, targetCount, unit, maxTime, searchO
         time.sleep(3)
         requestData.get_ip()
         time.sleep(3)
+        if check_product_list():
+            make_cache()
 
 def check_product_list():
     try:
