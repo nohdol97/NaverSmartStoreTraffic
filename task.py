@@ -60,7 +60,6 @@ def start(profileNum, startTime):
         try:
             driver, temp_profile_dir, proxy = driverInfo.make_driver(profileNum)
             driver.set_page_load_timeout(50)  # 페이지 로딩 타임아웃 설정 (초)
-            current_time = datetime.now()
             products = productList.getMidValueKeywordList()
             for midValueKeywordStr in products:
                 try:
@@ -87,18 +86,25 @@ def start(profileNum, startTime):
             except:
                 time.sleep(3)
 
-        workDoneNum = len(products)
-        if 0 <= current_time.hour < 7:
-            sleep_time = random.uniform(*setValues.waitTimes["0~7시"]) * workDoneNum * setValues.windowCount
-        elif 7 <= current_time.hour < 10:
-            sleep_time = random.uniform(*setValues.waitTimes["7~10시"]) * workDoneNum * setValues.windowCount
-        elif 10 <= current_time.hour < 14:
-            sleep_time = random.uniform(*setValues.waitTimes["10~14시"]) * workDoneNum * setValues.windowCount
-        elif 14 <= current_time.hour < 17:
-            sleep_time = random.uniform(*setValues.waitTimes["14~17시"]) * workDoneNum * setValues.windowCount
-        else:
-            sleep_time = random.uniform(*setValues.waitTimes["17시 이후"]) * workDoneNum * setValues.windowCount
         if success:
+            current_time = datetime.now()
+            workDoneNum = len(products)
+            sleep_time = get_sleep_time(current_time, workDoneNum)
             time.sleep(sleep_time) # 일정시간 대기
         else:
             time.sleep(timeValues.getWaitRepeatingTime())
+
+def get_sleep_time(current_time, workDoneNum):
+    for time_range in setValues.waitTimes.keys():
+        if time_range == "그 외":
+            continue  # "그 외"는 마지막에 처리
+
+        start_hour, end_hour = map(int, time_range.replace("시", "").split("~"))
+        
+        if start_hour <= current_time.hour < end_hour:
+            sleep_time = random.uniform(*setValues.waitTimes[time_range]) * workDoneNum * setValues.windowCount
+            return sleep_time
+
+    # "그 외" 범위를 기본값으로 사용
+    sleep_time = random.uniform(*setValues.waitTimes["그 외"]) * workDoneNum * setValues.windowCount
+    return sleep_time
