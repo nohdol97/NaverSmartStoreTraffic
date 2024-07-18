@@ -6,7 +6,19 @@ def getMidValueKeywordList():
     try:
         with open('product_list.txt', 'r', encoding='utf-8') as file:
             lines = [line.strip() for line in file if line.strip()]  # 빈 줄을 무시
-        mid_value_keyword = lines
+
+        if not lines:
+            return []
+
+        # 가장 앞의 숫자를 추출하여 정수 리스트로 변환
+        first_numbers = [int(line.split(',')[0]) for line in lines]
+
+        # 가장 큰 숫자를 찾음
+        max_number = max(first_numbers)
+
+        # 가장 큰 숫자와 일치하는 모든 줄을 필터링
+        mid_value_keyword = [line for line in lines if int(line.split(',')[0]) == max_number]
+
         random.shuffle(mid_value_keyword)  # 셔플
         return mid_value_keyword
     except:
@@ -23,10 +35,15 @@ def decreaseNum(mid_value):
 
         for line in lines:
             parts = line.split(',')
-            # 해당하는 mid_value 라인의 숫자를 하나 뺌
-            if parts[0] == mid_value and int(parts[-1]) > 0:
-                # 마지막 숫자에서 1을 뺌
-                parts[-1] = str(int(parts[-1]) - 1)
+            # 해당하는 mid_value 라인의 숫자들을 하나씩 뺌
+            if parts[2] == mid_value:
+                if int(parts[0]) > 0:
+                    parts[0] = str(int(parts[0]) - 1)
+                if int(parts[-1]) > 0:
+                    parts[-1] = str(int(parts[-1]) - 1)
+                # 가장 앞에가 0이 되면 두번째 것을 복사
+                if int(parts[0]) == 0:
+                    parts[0] = parts[1]
                 isUpdated = True
             updated_lines.append(','.join(parts))
 
@@ -34,7 +51,7 @@ def decreaseNum(mid_value):
             # 파일에 다시 쓰기
             with open('product_list.txt', 'w', encoding='utf-8') as file:
                 for updated_line in updated_lines:
-                    file.write(updated_line + '\n')
+                    file.write(updated_line + '\n')        
     except:
         time.sleep(3)
         decreaseNum(mid_value)

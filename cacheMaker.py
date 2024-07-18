@@ -52,8 +52,8 @@ def create_cache(cache_number):
         driver.set_page_load_timeout(60)  # 페이지 로딩 타임아웃 설정 (초)
         for midValueKeywordStr in productList.getMidValueKeywordList():
             product = midValueKeywordStr.split(',')
-            if (len(product) == 4):
-                mid_value, comparison_mid_value, keyword = product[0], product[1], product[2]
+            if (len(product) == 6):
+                mid_value, comparison_mid_value, keyword = product[2], product[3], product[4]
                 if setValues.searchOption == "통검":
                     access = accessShoppingUtil.access_total_random(driver, keyword)
                     find, page, ranking = findUtil.findTargetByMidValue(driver, comparison_mid_value, keyword, False, False)
@@ -69,7 +69,7 @@ def create_cache(cache_number):
                 if not access:
                     break
             else:
-                mid_value, keyword = product[0], product[1]
+                mid_value, keyword = product[2], product[3]
                 if setValues.searchOption == "통검":
                     access = accessShoppingUtil.access_total_random(driver, keyword)
                     find, page, ranking = findUtil.findTargetByMidValue(driver, mid_value, keyword, False, False)

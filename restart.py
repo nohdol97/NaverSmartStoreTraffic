@@ -7,6 +7,7 @@ import timeValues
 import cacheMaker
 import requestData
 import setValues
+import waitTimes
 
 def make_cache():
     with ThreadPoolExecutor(max_workers=setValues.windowCount) as executor:
@@ -31,6 +32,7 @@ def work(windowCount, maxPages, maxAttempts, targetCount, unit, searchOption):
     setValues.searchOption = searchOption
 
     while True:
+        waitTimes.load_wait_times_from_file()
         startTime = datetime.now()
         if check_product_list():
             main(startTime)
