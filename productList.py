@@ -1,6 +1,8 @@
 import random, time
 from datetime import datetime
 
+import setValues
+
 # 유입할 상품 목록
 def getMidValueKeywordList():
     try:
@@ -8,7 +10,10 @@ def getMidValueKeywordList():
             lines = [line.strip() for line in file if line.strip()]  # 빈 줄을 무시
 
         if not lines:
-            return []
+            return 0, []
+        
+        # 맨 마지막 줄을 total로 분리
+        total = lines.pop() if lines else None
 
         # 가장 앞의 숫자를 추출하여 정수 리스트로 변환
         first_numbers = [int(line.split(',')[0]) for line in lines]
@@ -19,8 +24,29 @@ def getMidValueKeywordList():
         # 가장 큰 숫자와 일치하는 모든 줄을 필터링
         mid_value_keyword = [line for line in lines if int(line.split(',')[0]) == max_number]
 
-        random.shuffle(mid_value_keyword)  # 셔플
-        return mid_value_keyword
+        updated_lines = []
+        isUpdated = False
+
+        for line in mid_value_keyword:
+            parts = line.split(',')
+            if int(parts[0]) > 0:
+                parts[0] = str(int(parts[0]) - 1)
+            # 가장 앞에가 0이 되면 두번째 것을 복사
+            if int(parts[0]) == 0:
+                parts[0] = str(int(parts[1]) * setValues.windowCount)
+            updated_lines.append(','.join(parts))
+            isUpdated = True
+
+        if isUpdated:
+            # 파일에 다시 쓰기
+            with open('product_list.txt', 'w', encoding='utf-8') as file:
+                for updated_line in updated_lines:
+                    file.write(updated_line + '\n')
+                if total:
+                    file.write(total + '\n')  # 마지막 줄 다시 쓰기
+
+        random.shuffle(updated_lines)  # 셔플
+        return total, updated_lines
     except:
         time.sleep(3)
         getMidValueKeywordList()
@@ -33,17 +59,15 @@ def decreaseNum(mid_value):
         updated_lines = []
         isUpdated = False
 
+        # 맨 마지막 줄을 total로 분리
+        total = lines.pop() if lines else None
+
         for line in lines:
             parts = line.split(',')
             # 해당하는 mid_value 라인의 숫자들을 하나씩 뺌
             if parts[2] == mid_value:
-                if int(parts[0]) > 0:
-                    parts[0] = str(int(parts[0]) - 1)
                 if int(parts[-1]) > 0:
                     parts[-1] = str(int(parts[-1]) - 1)
-                # 가장 앞에가 0이 되면 두번째 것을 복사
-                if int(parts[0]) == 0:
-                    parts[0] = parts[1]
                 isUpdated = True
             updated_lines.append(','.join(parts))
 
@@ -51,7 +75,9 @@ def decreaseNum(mid_value):
             # 파일에 다시 쓰기
             with open('product_list.txt', 'w', encoding='utf-8') as file:
                 for updated_line in updated_lines:
-                    file.write(updated_line + '\n')        
+                    file.write(updated_line + '\n')   
+                if total:
+                    file.write(total + '\n')  # 마지막 줄 다시 쓰기     
     except:
         time.sleep(3)
         decreaseNum(mid_value)

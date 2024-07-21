@@ -42,12 +42,14 @@ def handle_product(driver, proxy, product):
         mid_value, comparison_mid_value, keyword = product_parts[2], product_parts[3], product_parts[4]
         # 로그인 필요하면 여기에 추가
         # loginUtil.login_with_account(driver, id, pw)
-        access = accessShoppingUtil.access_direct(driver, keyword)
+        # access = accessShoppingUtil.access_direct(driver, keyword)
+        access = accessShoppingUtil.access_total_random(driver, keyword)
         if access:
             return process_product(driver, proxy, mid_value, comparison_mid_value, keyword, is_comparison=True)
     else:
         mid_value, keyword = product_parts[2], product_parts[3]
-        access = accessShoppingUtil.access_direct(driver, keyword)
+        # access = accessShoppingUtil.access_direct(driver, keyword)
+        access = accessShoppingUtil.access_total_random(driver, keyword)
         if access:
             return process_product(driver, proxy, mid_value, None, keyword, is_comparison=False)
     return False
@@ -55,18 +57,18 @@ def handle_product(driver, proxy, product):
 def start(profileNum, startTime):
     while True:
         if productList.checkFinish(startTime):
+            driverInfo.kill_driver(driver, None)
             break
-        success = False
         try:
             driver, temp_profile_dir, proxy = driverInfo.make_driver(profileNum)
             driver.set_page_load_timeout(50)  # 페이지 로딩 타임아웃 설정 (초)
-            products = productList.getMidValueKeywordList()
+            total, products = productList.getMidValueKeywordList()
             for midValueKeywordStr in products:
                 try:
                     if not productList.checkProductNum(midValueKeywordStr):
                         continue
-                    
-                    if not handle_product(driver, proxy, midValueKeywordStr):
+                    result = handle_product(driver, proxy, midValueKeywordStr)
+                    if not result:
                         break
                 except Exception as e:
                     print(f"Error: {e}")
@@ -74,7 +76,6 @@ def start(profileNum, startTime):
                 time.sleep(timeValues.getWaitLoadingTime())
             
             driverInfo.kill_driver(driver, proxy)
-            success = True
         except:
             driverInfo.kill_driver(driver, proxy)
 
@@ -86,15 +87,15 @@ def start(profileNum, startTime):
             except:
                 time.sleep(3)
 
-        if success:
+        if result:
             current_time = datetime.now()
             workDoneNum = len(products)
-            sleep_time = get_sleep_time(current_time, workDoneNum)
+            sleep_time = get_sleep_time(current_time, workDoneNum, total)
             time.sleep(sleep_time) # 일정시간 대기
         else:
             time.sleep(timeValues.getWaitRepeatingTime())
 
-def get_sleep_time(current_time, workDoneNum):
+def get_sleep_time(current_time, workDoneNum, total):
     for time_range in setValues.waitTimes.keys():
         if time_range == "그 외":
             continue  # "그 외"는 마지막에 처리
@@ -102,9 +103,11 @@ def get_sleep_time(current_time, workDoneNum):
         start_hour, end_hour = map(int, time_range.replace("시", "").split("~"))
         
         if start_hour <= current_time.hour < end_hour:
-            sleep_time = random.uniform(*setValues.waitTimes[time_range]) * workDoneNum * setValues.windowCount
+            sleep_time = random.uniform(*setValues.waitTimes[time_range]) * workDoneNum * (setValues.targetCount // int(total))
+            print(f'sleep time : {sleep_time}')
             return sleep_time
 
     # "그 외" 범위를 기본값으로 사용
-    sleep_time = random.uniform(*setValues.waitTimes["그 외"]) * workDoneNum * setValues.windowCount
+    sleep_time = random.uniform(*setValues.waitTimes["그 외"]) * workDoneNum * (setValues.targetCount // int(total))
+    print(f'sleep time : {sleep_time}')
     return sleep_time

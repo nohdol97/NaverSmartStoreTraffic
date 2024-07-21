@@ -5,6 +5,7 @@ import os, time, shutil, psutil
 import chromeOptions
 import hiPaiProxy
 import cacheMaker
+import mobile_emulations
 
 def create_driver(profileNum):
     for i in range(10):
@@ -23,7 +24,7 @@ def create_driver(profileNum):
             # Chrome option 설정
             chrome_options = webdriver.ChromeOptions()
             chromeOptions.addOptimization(chrome_options, temp_profile_dir)
-            chromeOptions.addMobile(chrome_options)
+            mobile = chromeOptions.addMobile(chrome_options)
             hiPaiProxy = chromeOptions.addProxy(chrome_options)
 
             # Xvfb 설정
@@ -46,6 +47,8 @@ def create_driver(profileNum):
 
             # Chrome 최적화
             # chromeOptions.intercept(driver)
+
+            mobile_emulations.mobile_setting(driver, mobile)
 
             return driver, temp_profile_dir, hiPaiProxy
         except Exception as e:

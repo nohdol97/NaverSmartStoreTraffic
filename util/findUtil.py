@@ -1,4 +1,4 @@
-import time
+import time, random
 
 import timeValues as timeValues
 import util.scrollUtil as scrollUtil
@@ -9,6 +9,8 @@ import util.accessShoppingUtil as accessShoppingUtil
 
 import allElements
 import setValues
+
+from selenium.webdriver.common.action_chains import ActionChains
 
 def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite, isClick):
     find = False
@@ -39,6 +41,7 @@ def findTargetByMidValue(driver, mid_value, keyword, isPriceComparisonSite, isCl
                         break
                     # 찾는게 없으면 다음 버튼 클릭
                     if clickUtil.clickNext(driver, i):
+                        time.sleep(random.uniform(1, 2))
                         count = count + 1
                         break
                 except:
@@ -105,9 +108,8 @@ def findByTitle(driver, title):
         element = allElements.getTitleValueProduct(driver, title)
         if element:
             # 있다면 해당 상품 위치로 이동
-            element_location = element.location['y']
-            offset = -150  # 요소 위치에서 위로 스크롤할 픽셀 값
-            driver.execute_script(f"window.scrollTo(0, {element_location + offset});")
+            actions = ActionChains(driver)
+            actions.move_to_element(element).perform()
             time.sleep(timeValues.getWaitLoadingTime())
             
             clickUtil.clickTarget(driver, element)

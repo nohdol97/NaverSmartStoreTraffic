@@ -1,4 +1,4 @@
-import time
+import time, random
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
@@ -23,7 +23,7 @@ def scrollToEndFast(driver):
 
 def scrollToEnd(driver, scrollIntervalTime):
     while scrollEndPosition(driver):
-        driver.find_element(By.XPATH, "//body").send_keys(Keys.PAGE_DOWN)
+        scrollDown(driver)
         time.sleep(scrollIntervalTime)
 
 def scrollDetailPage(driver, scrollIntervalTime):
@@ -56,7 +56,28 @@ def scrollDetailPage(driver, scrollIntervalTime):
             pass
 
 def scrollUp(driver):
-    driver.find_element(By.XPATH, "//body").send_keys(Keys.PAGE_UP)
+    pixel = random.randint(500, 1000)
+    smoother_scroll(driver, -pixel)
 
 def scrollDown(driver):
-    driver.find_element(By.XPATH, "//body").send_keys(Keys.PAGE_DOWN)
+    pixel = random.randint(500, 1000)
+    smoother_scroll(driver, pixel)
+
+def smoother_scroll(driver, total_distance, step_size=10, delay=0.01):
+    current_distance = 0
+    step_size = int(step_size) if total_distance > 0 else -int(step_size)  # 스크롤 방향 설정
+    while abs(current_distance) < abs(total_distance):
+        driver.execute_script("window.scrollBy(0, arguments[0]);", step_size)
+        current_distance += step_size
+        time.sleep(delay)
+
+def smooth_scroll_to_element(driver, element, offset=-150, steps=50, delay=0.01):
+    element_location = element.location['y'] + offset
+    current_position = driver.execute_script("return window.pageYOffset;")
+    delta = element_location - current_position
+    step_size = delta / steps
+
+    for _ in range(steps):
+        current_position += step_size
+        driver.execute_script(f"window.scrollTo(0, {current_position});")
+        time.sleep(delay + random.uniform(0, delay))

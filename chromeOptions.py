@@ -5,12 +5,12 @@ import mobile_emulations
 
 def addOptimization(chrome_options, temp_profile_dir = None):
     chrome_options.add_argument("--log-level=3")  # ERROR 이상의 로그만 출력
-    chrome_options.add_argument('--ignore-certificate-errors') # 인증서 오류 무시
+    # chrome_options.add_argument('--ignore-certificate-errors') # 인증서 오류 무시
     if temp_profile_dir:
         chrome_options.add_argument(f"--user-data-dir={temp_profile_dir}")  # 사용자 프로필 디렉토리 지정
     # chrome_options.add_argument('--disable-javascript')  # 자바스크립트 비활성화
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
+    # chrome_options.add_argument('--no-sandbox')
+    # chrome_options.add_argument('--disable-dev-shm-usage')
     # chrome_options.add_argument('--disable-gpu')
     # chrome_options.add_argument('--disable-software-rasterizer')
     chrome_options.add_argument('--no-zygote')
@@ -34,8 +34,9 @@ def addOptimization(chrome_options, temp_profile_dir = None):
     chrome_options.add_experimental_option("prefs", chrome_prefs)
 
 def addMobile(chrome_options):
-    # mobile emulation (상품 상세 들어가면 모바일 아님)
-    chrome_options.add_experimental_option("mobileEmulation", mobile_emulations.getMobileEmulation())
+    mobile = mobile_emulations.getMobileEmulation()
+    chrome_options.add_experimental_option("mobileEmulation", mobile)
+    return mobile
 
 def addProxy(chrome_options):
     # hiPai Proxy 설정

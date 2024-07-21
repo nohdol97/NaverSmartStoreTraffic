@@ -19,12 +19,14 @@ def save_product_data(product_data):
     file_path = 'product_list.txt'
     
     with open(file_path, 'w', encoding='utf-8') as file:
+        total = 0
         for item in product_data:
             accessNum = int(item[-1])
             quotient = accessNum // 500
-            # 앞에 두 개의 같은 값을 추가
-            line = f'{quotient},{quotient},' + ','.join(map(str, item))
+            total += accessNum
+            line = f'{quotient*setValues.windowCount},{quotient},' + ','.join(map(str, item))
             file.write(line + '\n')
+        file.write(str(total))
 
 def save_proxy_ips(proxy_ips):
     file_path = 'hiPaiIp.txt'
@@ -32,6 +34,15 @@ def save_proxy_ips(proxy_ips):
     with open(file_path, 'w', encoding='utf-8') as file:
         for ip in proxy_ips:
             file.write(ip + '\n')
+
+def save_id(id_data):
+    try:
+        with open('id.txt', 'w', encoding='utf-8') as file:
+            for item in id_data:
+                file.write(f"{item['id']},{item['password']}\n")
+        print("ID data saved to id.txt")
+    except Exception as e:
+        print(f"Error saving ID data: {e}")
 
 def get_product():
     max_retries = 3
@@ -69,3 +80,20 @@ def get_ip():
             print(f"Error in get_ip (attempt {attempt + 1}): {e}")
             time.sleep(3)
     print("Max retries reached for get_ip")
+
+def get_id():
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(f'{BASE_URL}/get_id', timeout=10)
+            if response.status_code == 200:
+                id_data = response.json().get('id_data', [])
+                save_id(id_data)
+                print(f"ID retrieved and saved: {id_data}")
+                return
+            else:
+                print(f"Failed to retrieve ID: {response.status_code}")
+        except requests.RequestException as e:
+            print(f"Error in get_ip (attempt {attempt + 1}): {e}")
+            time.sleep(3)
+    print("Max retries reached for get_id")
