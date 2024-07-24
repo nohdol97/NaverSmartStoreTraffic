@@ -24,7 +24,7 @@ def inputkeys(driver, someWord : str, placeholder : str):
     # 맥 환경에서 붙여넣기
     # holderInput.send_keys(Keys.COMMAND, 'v')
 
-def login_with_account(driver, naverid, naverpassword):
+def login_with_account(driver, id, pw):
     fail_login = False
     # 로그인 2번 시도
     for i in range(2):
@@ -32,8 +32,8 @@ def login_with_account(driver, naverid, naverpassword):
             break
         driver.get("https://nid.naver.com/nidlogin.login?svctype=262144&url=http://m.naver.com/aside/")
         time.sleep(2)
-        inputkeys(driver, naverid, "id")
-        inputkeys(driver, naverpassword, "pw")
+        inputkeys(driver, id, "id")
+        inputkeys(driver, pw, "pw")
         try:
             element = allElements.getStayLoginState(driver)
             element.click()

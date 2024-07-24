@@ -88,19 +88,21 @@ def checkProductNum(midValueKeywordStr):
         return False
     return True
 
-def checkFinish(startTime):
+def checkFinish(startTime, id):
     try:
         now = datetime.now()
         midnight = startTime.replace(hour=23, minute=50, second=0, microsecond=0)
         if now > midnight:
             return True
-        with open('product_list.txt', 'r', encoding='utf-8') as file:
-            lines = [line.strip() for line in file if line.strip()]  # 빈 줄을 무시
-        for line in lines:
-            parts = line.split(',')
-            if int(parts[-1]) > 0:
-                return False
-        return True 
+        if not id:
+            with open('product_list.txt', 'r', encoding='utf-8') as file:
+                lines = [line.strip() for line in file if line.strip()]  # 빈 줄을 무시
+                for line in lines:
+                    parts = line.split(',')
+                    if int(parts[-1]) > 0:
+                        return False
+        else:
+            return False
     except:
         time.sleep(3)
         checkFinish(startTime)

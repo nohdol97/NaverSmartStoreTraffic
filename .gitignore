@@ -8,3 +8,5 @@ cache[0-9]*/
 build/
 dist/
 waitTimes.txt
+product_for_id.txt
+id.txt

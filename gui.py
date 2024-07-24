@@ -40,7 +40,7 @@ class MyApp(QWidget):
         # 라디오 버튼 생성
         self.option_group = QButtonGroup(self)
         self.radio_buttons = {}
-        radio_labels = ["통검", "쇼검", "통검&&쇼검"]  # "통검&쇼검"을 "통검&&쇼검"으로 수정
+        radio_labels = ["통검", "쇼검", "통검&&쇼검", "ID"]  # "통검&쇼검"을 "통검&&쇼검"으로 수정
 
         radio_layout = QHBoxLayout()
         spacer_left = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)

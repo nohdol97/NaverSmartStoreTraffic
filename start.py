@@ -8,6 +8,7 @@ import cacheMaker
 import requestData
 import setValues
 import waitTimes
+import scheduler
 
 def make_cache():
     with ThreadPoolExecutor(max_workers=setValues.windowCount) as executor:
@@ -32,6 +33,9 @@ def work(windowCount, maxPages, maxAttempts, targetCount, unit, searchOption):
     setValues.searchOption = searchOption
 
     while True:
+        if setValues.searchOption == "ID":
+            stop_event, scheduler_thread = scheduler.start_scheduler()
+            requestData.get_product_for_id()
         requestData.get_product()
         time.sleep(3)
         requestData.get_ip()
@@ -51,6 +55,9 @@ def work(windowCount, maxPages, maxAttempts, targetCount, unit, searchOption):
         else:
             time.sleep(300)
         time.sleep(timeValues.getWakeWaitingTime())
+        # 스케줄러를 안전하게 종료할 수 있도록 보장
+        stop_event.set()
+        scheduler_thread.join()
 
 def check_product_list():
     try:

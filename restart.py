@@ -8,6 +8,7 @@ import cacheMaker
 import requestData
 import setValues
 import waitTimes
+import scheduler
 
 def make_cache():
     with ThreadPoolExecutor(max_workers=setValues.windowCount) as executor:
@@ -32,6 +33,9 @@ def work(windowCount, maxPages, maxAttempts, targetCount, unit, searchOption):
     setValues.searchOption = searchOption
 
     while True:
+        if setValues.searchOption == "ID":
+            stop_event, scheduler_thread = scheduler.start_scheduler()
+            requestData.get_product_for_id()
         waitTimes.load_wait_times_from_file()
         startTime = datetime.now()
         if check_product_list():
@@ -51,10 +55,13 @@ def work(windowCount, maxPages, maxAttempts, targetCount, unit, searchOption):
         time.sleep(3)
         if check_product_list():
             make_cache()
+        # 스케줄러를 안전하게 종료할 수 있도록 보장
+        stop_event.set()
+        scheduler_thread.join()
 
 def check_product_list():
     try:
-        with open(file_name, 'r', encoding='utf-8') as file:
+        with open('product_list.txt', 'r', encoding='utf-8') as file:
             lines = [line.strip().replace(' ', '') for line in file if line.strip()]
         
         if not lines:

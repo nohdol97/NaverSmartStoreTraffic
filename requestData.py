@@ -44,6 +44,14 @@ def save_id(id_data):
     except Exception as e:
         print(f"Error saving ID data: {e}")
 
+def save_product_for_id(product_data):
+    file_path = 'product_for_id.txt'
+
+    with open(file_path, 'w', encoding='utf-8') as file:
+        for item in product_data:
+            line = ','.join(map(str, item))
+            file.write(line + '\n')
+
 def get_product():
     max_retries = 3
     for attempt in range(max_retries):
@@ -97,3 +105,20 @@ def get_id():
             print(f"Error in get_ip (attempt {attempt + 1}): {e}")
             time.sleep(3)
     print("Max retries reached for get_id")
+
+def get_product_for_id():
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(f'{BASE_URL}/get_product_for_id', timeout=10)
+            if response.status_code == 200:
+                product_data = response.json().get('data', [])
+                save_product_for_id(product_data)
+                print(f"Product data for ID retrieved and saved: {product_data}")
+                return
+            else:
+                print(f"Failed to retrieve Product data for ID: {response.status_code}")
+        except requests.RequestException as e:
+            print(f"Error in get_product_for_id (attempt {attempt + 1}): {e}")
+            time.sleep(3)
+    print("Max retries reached for get_product_for_id")
