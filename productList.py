@@ -103,6 +103,7 @@ def checkFinish(startTime, id):
                         return False
         else:
             return False
+        return True
     except:
         time.sleep(3)
         checkFinish(startTime)
