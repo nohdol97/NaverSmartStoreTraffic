@@ -54,7 +54,7 @@ def work(windowCount, maxPages, maxAttempts, targetCount, unit, searchOption):
 
 def check_product_list():
     try:
-        with open('product_list.txt', 'r', encoding='utf-8') as file:
+        with open(file_name, 'r', encoding='utf-8') as file:
             lines = [line.strip().replace(' ', '') for line in file if line.strip()]
         
         if not lines:
